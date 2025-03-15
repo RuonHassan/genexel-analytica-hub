@@ -82,6 +82,17 @@ export default {
 					900: '#32416f',
 					950: '#21294a',
 				},
+				dark: {
+					100: '#2e2e3a',
+					200: '#25252e',
+					300: '#1e1e24',
+					400: '#17171c',
+					500: '#131316',
+					600: '#0e0e10',
+					700: '#0a0a0c',
+					800: '#050508',
+					900: '#010102',
+				}
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -118,7 +129,7 @@ export default {
 				'slide-in': 'slide-in 0.5s ease-out'
 			},
 			boxShadow: {
-				'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)'
+				'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.3)'
 			},
 			backdropBlur: {
 				'glass': '20px'
