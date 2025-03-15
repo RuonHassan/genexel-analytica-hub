@@ -70,46 +70,25 @@ const About = () => {
                 Our Leadership Team
               </h2>
               <p className="text-gray-600 max-w-2xl mx-auto">
-                Our diverse team combines expertise in data science, educational research, and technology 
+                Our leadership combines expertise in data science, educational research, and technology 
                 to deliver transformative analytics solutions.
               </p>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                {
-                  name: "Dr. Jonathan Mitchell",
-                  role: "Founder & CEO",
-                  bio: "Former Dean of Research with 15+ years experience in educational data analysis",
-                  image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800"
-                },
-                {
-                  name: "Dr. Sophia Chen",
-                  role: "Chief Research Officer",
-                  bio: "PhD in Educational Analytics with expertise in predictive modeling for student success",
-                  image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=800"
-                },
-                {
-                  name: "Michael Thompson",
-                  role: "Chief Technology Officer",
-                  bio: "Former Tech Lead at Google with specialization in AI applications for data analysis",
-                  image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800"
-                }
-              ].map((member, index) => (
-                <div key={index} className="glass-card p-6 rounded-xl text-center">
-                  <div className="w-24 h-24 mx-auto mb-4 relative">
-                    <div className="absolute inset-0 rounded-full bg-genexel-200 transform -rotate-6"></div>
-                    <img 
-                      src={member.image} 
-                      alt={member.name} 
-                      className="w-full h-full object-cover rounded-full relative z-10 border-2 border-white"
-                    />
-                  </div>
-                  <h3 className="text-xl font-semibold text-analytics-900 mb-1">{member.name}</h3>
-                  <p className="text-genexel-600 font-medium text-sm mb-3">{member.role}</p>
-                  <p className="text-gray-600 text-sm">{member.bio}</p>
+            <div className="flex justify-center">
+              <div className="glass-card p-6 rounded-xl text-center max-w-md">
+                <div className="w-32 h-32 mx-auto mb-4 relative">
+                  <div className="absolute inset-0 rounded-full bg-genexel-200 transform -rotate-6"></div>
+                  <img 
+                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" 
+                    alt="Nour Hassan" 
+                    className="w-full h-full object-cover rounded-full relative z-10 border-2 border-white"
+                  />
                 </div>
-              ))}
+                <h3 className="text-2xl font-semibold text-analytics-900 mb-1">Nour Hassan</h3>
+                <p className="text-genexel-600 font-medium text-lg mb-3">Founder & CEO</p>
+                <p className="text-gray-600">Former Dean of Research with 15+ years experience in educational data analysis and a passion for transforming how institutions leverage their data assets.</p>
+              </div>
             </div>
           </div>
         </section>
