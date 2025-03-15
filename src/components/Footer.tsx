@@ -12,8 +12,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="inline-block mb-6">
               <div className="flex items-center gap-2 font-bold text-2xl">
-                <span className="text-white">Gen</span>
-                <span className="text-genexel-300">exel</span>
+                <span className="text-white">Genexel</span>
               </div>
             </Link>
             <p className="text-gray-300 mb-6">

@@ -58,8 +58,7 @@ const Header = () => {
           to="/" 
           className="flex items-center gap-2 font-bold text-2xl text-genexel-700"
         >
-          <span className="text-genexel-800">Gen</span>
-          <span className="text-analytics-700">exel</span>
+          <span className="text-genexel-800">Genexel</span>
         </Link>
 
         {/* Desktop navigation */}
