@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navbar } from "@/components/Navbar";
 import { Toaster } from "sonner";
@@ -22,7 +23,7 @@ function App() {
         <Router>
           <div className="min-h-screen bg-background">
             <Navbar />
-            <main>
+            <main className="pt-16"> {/* Added padding top to account for fixed navbar */}
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/articles" element={<Articles />} />
