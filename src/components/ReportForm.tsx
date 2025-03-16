@@ -4,22 +4,24 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { uploadImage, upsertReport } from '@/lib/supabase';
 import { toast } from 'sonner';
+import RichTextEditor from './RichTextEditor';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   description: z.string().optional(),
   category: z.string().min(1, 'Category is required'),
+  content: z.string().min(1, 'Content is required'),
 });
 
 export function ReportForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [reportFile, setReportFile] = useState<File | null>(null);
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null);
+  const [content, setContent] = useState('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -27,6 +29,7 @@ export function ReportForm() {
       title: '',
       description: '',
       category: '',
+      content: '',
     },
   });
 
@@ -53,6 +56,7 @@ export function ReportForm() {
         title: values.title,
         description: values.description,
         category: values.category,
+        content: content, // Use the rich text editor content
         file_url: fileUrl,
         thumbnail_url: thumbnailUrl,
       };
@@ -63,6 +67,7 @@ export function ReportForm() {
       form.reset();
       setReportFile(null);
       setThumbnailFile(null);
+      setContent('');
     } catch (error) {
       console.error('Error saving report:', error);
       toast.error('Failed to save report');
@@ -72,7 +77,7 @@ export function ReportForm() {
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle>Upload New Report</CardTitle>
       </CardHeader>
@@ -114,9 +119,8 @@ export function ReportForm() {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea 
-                      placeholder="Report description" 
-                      className="h-20"
+                    <Input 
+                      placeholder="Brief description" 
                       {...field} 
                     />
                   </FormControl>
@@ -124,6 +128,15 @@ export function ReportForm() {
                 </FormItem>
               )}
             />
+
+            <div className="space-y-2">
+              <FormLabel>Content</FormLabel>
+              <RichTextEditor
+                content={content}
+                onChange={setContent}
+                placeholder="Write your report content here..."
+              />
+            </div>
 
             <div className="space-y-4">
               <div className="space-y-2">

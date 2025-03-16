@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BarChart2, FileText, BarChart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -34,7 +33,7 @@ const Hero = () => {
   }, []);
 
   return (
-    <div ref={heroRef} className="relative min-h-screen flex items-center pt-16 overflow-hidden">
+    <div ref={heroRef} className="relative min-h-screen flex items-center pt-12 overflow-hidden">
       {/* Background pattern */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-white to-genexel-50">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#3294f0_1px,transparent_1px)] [background-size:20px_20px]"></div>
@@ -44,7 +43,7 @@ const Hero = () => {
       <div className="absolute top-1/4 right-[10%] w-20 h-20 bg-genexel-200/60 rounded-full blur-xl animate-pulse"></div>
       <div className="absolute bottom-1/4 left-[15%] w-32 h-32 bg-analytics-200/40 rounded-full blur-xl animate-pulse" style={{ animationDelay: "1s" }}></div>
       
-      <div className="container mx-auto px-4 md:px-6 py-12 md:py-24 relative z-10">
+      <div className="container mx-auto px-4 md:px-6 py-8 md:py-16 relative z-10">
         <div className="max-w-4xl mx-auto text-center space-y-8">
           <div 
             className={`transition-all duration-700 delay-100 transform ${

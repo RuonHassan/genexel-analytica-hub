@@ -1,17 +1,12 @@
-
 import { useEffect } from "react";
 import ArticleCard from "@/components/ArticleCard";
 import { Article } from "@/lib/supabase";
-import { Button } from "@/components/ui/button";
 
 interface ArticlesGridProps {
   articles: Article[];
   currentPage: number;
   isLoading: boolean;
   error: Error | null;
-  searchTerm: string;
-  categoryFilter: string;
-  resetFilters: () => void;
 }
 
 const ArticlesGrid = ({
@@ -19,9 +14,6 @@ const ArticlesGrid = ({
   currentPage,
   isLoading,
   error,
-  searchTerm,
-  categoryFilter,
-  resetFilters
 }: ArticlesGridProps) => {
   
   // Format article data for ArticleCard component
@@ -37,7 +29,8 @@ const ArticlesGrid = ({
       }),
       author: "Staff Writer", // Default author since we don't have this in DB yet
       category: article.category,
-      imageUrl: article.image_url || "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
+      imageUrl: article.thumbnail_url || "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
+      slug: article.slug || article.id,
     };
   };
 
@@ -74,14 +67,7 @@ const ArticlesGrid = ({
   if (articles.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No articles found matching your criteria.</p>
-        <Button 
-          variant="link" 
-          onClick={resetFilters}
-          className="mt-2 text-genexel-600"
-        >
-          Clear filters
-        </Button>
+        <p className="text-gray-500 text-lg">No articles available at the moment.</p>
       </div>
     );
   }

@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
@@ -47,10 +46,10 @@ const Header = () => {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-300 py-4",
+        "fixed top-0 left-0 w-full z-50 transition-all duration-300 py-3",
         isScrolled 
-          ? "bg-white/80 backdrop-blur-md shadow-sm" 
-          : "bg-transparent"
+          ? "bg-genexel-100 shadow-sm" 
+          : "bg-genexel-50/80 backdrop-blur-md"
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">

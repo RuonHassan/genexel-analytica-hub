@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Facebook, Twitter, Linkedin, Mail } from "lucide-react";
 
@@ -16,7 +15,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-gray-300 mb-6">
-              Data analysis experts specializing in higher education insights. 
+              Data analysis specialists with expertise in higher education insights. 
               We transform complex data into actionable intelligence.
             </p>
             <div className="flex space-x-4">
@@ -60,19 +59,19 @@ const Footer = () => {
             <h3 className="font-semibold text-xl mb-6">Our Services</h3>
             <ul className="space-y-3">
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Data Analysis</a>
+                <Link to="/services/data-analysis" className="text-gray-300 hover:text-white transition-colors">Data Analysis</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Research Publications</a>
+                <Link to="/services/research-publications" className="text-gray-300 hover:text-white transition-colors">Research Publications</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Custom Reports</a>
+                <Link to="/services/custom-reports" className="text-gray-300 hover:text-white transition-colors">Bespoke Reports</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Consultancy</a>
+                <Link to="/services/consultancy" className="text-gray-300 hover:text-white transition-colors">Consultancy</Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-white transition-colors">Workshops</a>
+                <Link to="/services/workshops" className="text-gray-300 hover:text-white transition-colors">Workshops</Link>
               </li>
             </ul>
           </div>
@@ -85,10 +84,10 @@ const Footer = () => {
               <p>United Kingdom</p>
             </address>
             <p className="text-gray-300 mb-2">
-              <span className="font-medium">Email:</span> info@genexel.com
+              <span className="font-medium">Email:</span> enquiries@genexel.com
             </p>
             <p className="text-gray-300">
-              <span className="font-medium">Phone:</span> +44 (0) 1234 567890
+              <span className="font-medium">Tel:</span> +44 (0) 1234 567890
             </p>
           </div>
         </div>

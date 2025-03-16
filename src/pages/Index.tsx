@@ -1,7 +1,5 @@
-
 import { useEffect } from "react";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import ValueProposition from "@/components/ValueProposition";
 import FeaturedContent from "@/components/FeaturedContent";
@@ -99,7 +97,6 @@ const Index = () => {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 };

@@ -1,9 +1,9 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, FilePlus } from "lucide-react";
+import { Search, Upload } from "lucide-react";
+import RichTextUploadModal from './RichTextUploadModal';
+import { CategorySelect } from "./ui/category-select";
 
 interface ArticlesHeroProps {
   searchTerm: string;
@@ -22,6 +22,13 @@ const ArticlesHero = ({
   categories,
   openUploadModal
 }: ArticlesHeroProps) => {
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const showUploads = import.meta.env.VITE_ENABLE_UPLOADS === "true";
+  
+  const handleCategoryChange = (value: string) => {
+    setCategoryFilter(value === 'all' ? '' : value);
+  };
+  
   return (
     <div className="bg-analytics-50 py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center">
@@ -43,26 +50,34 @@ const ArticlesHero = ({
               className="pl-10"
             />
           </div>
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-full md:w-[180px]">
-              <SelectValue placeholder="All Categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">All Categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Button 
-            onClick={openUploadModal}
-            className="bg-genexel-600 hover:bg-genexel-700 text-white md:w-auto"
-          >
-            <FilePlus className="mr-2 h-4 w-4" />
-            Upload
-          </Button>
+          
+          <CategorySelect
+            value={categoryFilter || 'all'}
+            onValueChange={handleCategoryChange}
+            categories={categories}
+            placeholder="All Categories"
+          />
+          
+          {showUploads && (
+            <Button 
+              onClick={() => setIsUploadModalOpen(true)}
+              className="hidden md:flex bg-genexel-600 hover:bg-genexel-700"
+            >
+              <Upload className="mr-2 h-4 w-4" />
+              Upload Article
+            </Button>
+          )}
         </div>
       </div>
+      
+      {/* Use the new rich text upload modal */}
+      {showUploads && (
+        <RichTextUploadModal
+          open={isUploadModalOpen}
+          onClose={() => setIsUploadModalOpen(false)}
+          type="article"
+        />
+      )}
     </div>
   );
 };

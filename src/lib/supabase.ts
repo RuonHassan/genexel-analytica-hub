@@ -3,33 +3,120 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
-export type Article = {
-  id: string;
-  title: string;
-  content: string;
-  image_url?: string;
-  created_at: string;
-  updated_at: string;
-  summary?: string;
-  category: string;
-  slug: string;
-}
-
-export type Report = {
-  id: string;
-  title: string;
-  file_url: string;
-  thumbnail_url?: string;
-  created_at: string;
-  description?: string;
-  category: string;
-}
+console.log('Initializing Supabase with:', {
+  url: supabaseUrl ? 'present' : 'missing',
+  key: supabaseAnonKey ? 'present' : 'missing'
+});
 
 if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Missing Supabase environment variables:', {
+    url: supabaseUrl ? 'set' : 'missing',
+    key: supabaseAnonKey ? 'set' : 'missing'
+  });
   throw new Error('Missing Supabase environment variables');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: true
+  }
+});
+
+export interface Article {
+  id: string;
+  title: string;
+  content: string;
+  description?: string;
+  thumbnail_url?: string;
+  category: string;
+  created_at: string;
+  summary?: string;
+  slug: string;
+  image_url?: string;
+}
+
+export interface Report {
+  id: string;
+  title: string;
+  summary: string;
+  date: string;
+  category: string;
+  thumbnail_url: string;
+  content: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export const getArticles = async (): Promise<Article[]> => {
+  console.log('Starting getArticles fetch...');
+  try {
+    console.log('Making Supabase query...');
+    const { data, error, status, statusText } = await supabase
+      .from('articles')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    console.log('Supabase response:', { 
+      hasData: !!data, 
+      dataLength: data?.length, 
+      status, 
+      statusText,
+      error: error ? { message: error.message, code: error.code } : null
+    });
+
+    if (error) {
+      console.error('Supabase error fetching articles:', { error, status });
+      throw error;
+    }
+
+    if (!data) {
+      console.warn('No data returned from Supabase');
+      return [];
+    }
+
+    // Log each article's basic info for debugging
+    console.log('Articles found:', data.map(a => ({ 
+      id: a.id, 
+      title: a.title?.substring(0, 30), 
+      hasContent: !!a.content 
+    })));
+
+    // Validate the data structure
+    const validArticles = data.filter(article => {
+      const isValid = article.id && article.title && article.content;
+      if (!isValid) {
+        console.warn('Invalid article data:', {
+          id: article.id,
+          hasTitle: !!article.title,
+          hasContent: !!article.content
+        });
+      }
+      return isValid;
+    });
+
+    console.log(`Returning ${validArticles.length} valid articles`);
+    return validArticles;
+  } catch (error) {
+    console.error('Unexpected error in getArticles:', error);
+    throw error;
+  }
+};
+
+export const getReports = async (): Promise<Report[]> => {
+  const { data: reports, error } = await supabase
+    .from('reports')
+    .select('*')
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('Error fetching reports:', error);
+    throw new Error('Failed to fetch reports');
+  }
+
+  return reports || [];
+};
 
 // Helper function to upload image
 export async function uploadImage(file: File, bucket: string) {
@@ -50,20 +137,52 @@ export async function uploadImage(file: File, bucket: string) {
   return publicUrl;
 }
 
+// Helper function to create a URL-friendly slug
+const createSlug = (title: string): string => {
+  return title
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)+/g, '');
+};
+
 // Helper function to create or update an article
 export async function upsertArticle(article: Omit<Article, 'id' | 'created_at' | 'updated_at'> & { id?: string }) {
+  // Check authentication status
+  const { data: { session }, error: authError } = await supabase.auth.getSession();
+  
+  if (authError) {
+    console.error('Authentication error:', authError);
+    throw new Error('Not authenticated');
+  }
+
+  if (!session) {
+    console.error('No active session found');
+    throw new Error('Not authenticated');
+  }
+
+  console.log('Current user:', session.user.id);
+  
+  // Generate slug from title if not provided
+  const slug = article.slug || createSlug(article.title);
+  
   const { data, error } = await supabase
     .from('articles')
     .upsert([
       {
         ...article,
+        slug,
         updated_at: new Date().toISOString(),
+        user_id: session.user.id, // Add the user_id to the article
       }
     ])
     .select()
     .single();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error upserting article:', error);
+    throw error;
+  }
+  
   return data;
 }
 
@@ -79,28 +198,6 @@ export async function upsertReport(report: Omit<Report, 'id' | 'created_at'>) {
     ])
     .select()
     .single();
-
-  if (error) throw error;
-  return data;
-}
-
-// Fetch all articles
-export async function getArticles() {
-  const { data, error } = await supabase
-    .from('articles')
-    .select('*')
-    .order('created_at', { ascending: false });
-
-  if (error) throw error;
-  return data;
-}
-
-// Fetch all reports
-export async function getReports() {
-  const { data, error } = await supabase
-    .from('reports')
-    .select('*')
-    .order('created_at', { ascending: false });
 
   if (error) throw error;
   return data;

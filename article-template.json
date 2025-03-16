@@ -1,0 +1,7 @@
+{
+  "title": "Article Title Here",
+  "summary": "A brief summary of the article that will appear in cards and previews.",
+  "content": "# Main Heading\n\nThis is the main content of your article. You can use Markdown formatting.\n\n## Subheading\n\nYou can include paragraphs, lists, and other formatted content here.\n\n- Bullet point 1\n- Bullet point 2\n- Bullet point 3\n\n### Another Section\n\nContinue with more content. You can add as much text as needed.\n\n> This is a blockquote for important information or quotes.\n\nYou can also **bold text** or *italicize* as needed.",
+  "category": "Analysis",
+  "thumbnail_url": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1000"
+} 

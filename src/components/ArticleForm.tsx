@@ -1,18 +1,17 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { uploadImage, upsertArticle, Article } from '@/lib/supabase';
 import { toast } from 'sonner';
+import RichTextEditor from './RichTextEditor';
 
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
-  content: z.string().min(1, 'Content is required'),
   summary: z.string().optional(),
   category: z.string().min(1, 'Category is required'),
   slug: z.string().min(1, 'Slug is required')
@@ -29,12 +28,12 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
   const [isLoading, setIsLoading] = useState(false);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(article?.image_url || null);
+  const [content, setContent] = useState(article?.content || '');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: article?.title || '',
-      content: article?.content || '',
       summary: article?.summary || '',
       category: article?.category || '',
       slug: article?.slug || '',
@@ -63,7 +62,7 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
       // Make sure all required fields are present
       const articleData = {
         title: values.title,
-        content: values.content,
+        content: content, // Use the rich text editor content
         summary: values.summary,
         category: values.category,
         slug: values.slug,
@@ -85,6 +84,7 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
       form.reset();
       setImageFile(null);
       setPreviewImage(null);
+      setContent('');
       onSuccess?.();
     } catch (error) {
       console.error('Error saving article:', error);
@@ -95,7 +95,7 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle>{article ? 'Edit Article' : 'Create New Article'}</CardTitle>
       </CardHeader>
@@ -121,7 +121,7 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
               name="slug"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Slug</FormLabel>
+                  <FormLabel>URL Slug</FormLabel>
                   <FormControl>
                     <Input 
                       placeholder="url-friendly-slug" 
@@ -158,9 +158,8 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
                 <FormItem>
                   <FormLabel>Summary</FormLabel>
                   <FormControl>
-                    <Textarea 
+                    <Input 
                       placeholder="Brief summary of the article" 
-                      className="h-20"
                       {...field} 
                     />
                   </FormControl>
@@ -169,23 +168,14 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="content"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Content</FormLabel>
-                  <FormControl>
-                    <Textarea 
-                      placeholder="Article content" 
-                      className="h-48"
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="space-y-2">
+              <FormLabel>Content</FormLabel>
+              <RichTextEditor
+                content={content}
+                onChange={setContent}
+                placeholder="Write your article content here..."
+              />
+            </div>
 
             <div className="space-y-4">
               <FormLabel>Featured Image</FormLabel>
