@@ -1,12 +1,10 @@
-
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 const About = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow pt-24">
+      <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-16 md:py-24 bg-genexel-50">
           <div className="container mx-auto px-4 md:px-6">
@@ -34,7 +32,7 @@ const About = () => {
                   <h3 className="text-xl font-semibold mb-3 text-genexel-700">Mission</h3>
                   <p className="text-gray-600">
                     To empower educational institutions with data-driven insights that enhance decision-making, 
-                    improve student outcomes, and optimize resource allocation.
+                    improve student outcomes, and optimise resource allocation.
                   </p>
                 </div>
                 
@@ -50,7 +48,7 @@ const About = () => {
             <div className="relative">
               <div className="absolute -top-6 -left-6 w-32 h-32 bg-genexel-100 rounded-full opacity-70"></div>
               <img 
-                src="https://images.unsplash.com/photo-1581092921461-39b11a63bc0d?auto=format&fit=crop&q=80&w=800" 
+                src="/assets/images/data-analytics-concept.jpg" 
                 alt="Team working on analytics" 
                 className="rounded-xl relative z-10 shadow-lg w-full"
               />
@@ -80,14 +78,19 @@ const About = () => {
                 <div className="w-32 h-32 mx-auto mb-4 relative">
                   <div className="absolute inset-0 rounded-full bg-genexel-200 transform -rotate-6"></div>
                   <img 
-                    src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=800" 
+                    src="/assets/images/ceo-image.jpg" 
                     alt="Nour Hassan" 
                     className="w-full h-full object-cover rounded-full relative z-10 border-2 border-white"
+                    onError={(e) => {
+                      const target = e.target as HTMLImageElement;
+                      console.error("Image failed to load:", target.src);
+                      target.src = "https://via.placeholder.com/128?text=CEO"; // Fallback image
+                    }}
                   />
                 </div>
                 <h3 className="text-2xl font-semibold text-analytics-900 mb-1">Nour Hassan</h3>
                 <p className="text-genexel-600 font-medium text-lg mb-3">Founder & CEO</p>
-                <p className="text-gray-600">Former Dean of Research with 15+ years experience in educational data analysis and a passion for transforming how institutions leverage their data assets.</p>
+                <p className="text-gray-600">BSc Genetics: Queen Mary University of London, MSs Genomic Medicine: Imperial College London, Business Analytics and AI: Decision-Making Using Data: University of Cambridge.</p>
               </div>
             </div>
           </div>
@@ -120,7 +123,7 @@ const About = () => {
                 },
                 {
                   title: "Client Partnership",
-                  description: "We build collaborative relationships that prioritize client success"
+                  description: "We build collaborative relationships that prioritise client success"
                 },
                 {
                   title: "Continuous Innovation",
@@ -136,7 +139,6 @@ const About = () => {
           </div>
         </section>
       </main>
-      <Footer />
     </div>
   );
 };

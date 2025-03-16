@@ -125,22 +125,6 @@ const Hero = () => {
             <p className="text-gray-600">Tailored analytical solutions designed for your institution's specific needs.</p>
           </div>
         </div>
-
-        {/* Trusted by */}
-        <div 
-          className={`mt-20 text-center transition-all duration-700 delay-600 transform ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-          }`}
-        >
-          <p className="text-sm font-medium text-gray-500 mb-6">TRUSTED BY LEADING INSTITUTIONS</p>
-          <div className="flex flex-wrap justify-center gap-8 md:gap-12 opacity-70">
-            <div className="h-8 flex items-center justify-center text-gray-500 font-semibold">UNIVERSITY OF CAMBRIDGE</div>
-            <div className="h-8 flex items-center justify-center text-gray-500 font-semibold">OXFORD UNIVERSITY</div>
-            <div className="h-8 flex items-center justify-center text-gray-500 font-semibold">IMPERIAL COLLEGE</div>
-            <div className="h-8 flex items-center justify-center text-gray-500 font-semibold">UCL</div>
-            <div className="h-8 flex items-center justify-center text-gray-500 font-semibold">LSE</div>
-          </div>
-        </div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
@@ -7,12 +6,11 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Mail, Phone, MapPin, Clock, ArrowRight } from "lucide-react";
 import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 interface ContactFormValues {
   name: string;
   email: string;
-  organization: string;
+  organisation: string;
   subject: string;
   message: string;
 }
@@ -25,7 +23,7 @@ const Contact = () => {
     defaultValues: {
       name: "",
       email: "",
-      organization: "",
+      organisation: "",
       subject: "",
       message: ""
     }
@@ -48,7 +46,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-grow pt-24">
+      <main className="flex-grow">
         {/* Hero Section */}
         <section className="py-16 md:py-24 bg-genexel-50">
           <div className="container mx-auto px-4 md:px-6">
@@ -85,51 +83,6 @@ const Contact = () => {
                       <a href="mailto:info@genexel.com" className="text-genexel-600 hover:underline">
                         info@genexel.com
                       </a>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="glass-card p-6 rounded-xl">
-                  <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-genexel-100 flex items-center justify-center">
-                      <Phone className="text-genexel-600 h-5 w-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-analytics-900 mb-1">Phone</h3>
-                      <a href="tel:+442071234567" className="text-genexel-600 hover:underline">
-                        +44 (0) 20 7123 4567
-                      </a>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="glass-card p-6 rounded-xl">
-                  <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-genexel-100 flex items-center justify-center">
-                      <MapPin className="text-genexel-600 h-5 w-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-analytics-900 mb-1">Office</h3>
-                      <p className="text-gray-600">
-                        1 Innovation Square<br />
-                        Cambridge, CB2 1TP<br />
-                        United Kingdom
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="glass-card p-6 rounded-xl">
-                  <div className="flex gap-4">
-                    <div className="w-10 h-10 rounded-full bg-genexel-100 flex items-center justify-center">
-                      <Clock className="text-genexel-600 h-5 w-5" />
-                    </div>
-                    <div>
-                      <h3 className="text-lg font-semibold text-analytics-900 mb-1">Hours</h3>
-                      <p className="text-gray-600">
-                        Monday - Friday: 9:00 AM - 5:30 PM<br />
-                        Saturday - Sunday: Closed
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -175,10 +128,10 @@ const Contact = () => {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <FormField
                           control={form.control}
-                          name="organization"
+                          name="organisation"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel>Organization</FormLabel>
+                              <FormLabel>Organisation</FormLabel>
                               <FormControl>
                                 <Input placeholder="University Name" {...field} />
                               </FormControl>
@@ -235,27 +188,7 @@ const Contact = () => {
             </div>
           </div>
         </section>
-        
-        {/* Map section */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-analytics-900">Find Us</h2>
-              <p className="text-gray-600 mt-2">
-                Visit our office in Cambridge
-              </p>
-            </div>
-            
-            <div className="rounded-xl overflow-hidden shadow-lg h-96">
-              {/* Placeholder for a map - in a real app, integrate Google Maps or similar */}
-              <div className="w-full h-full bg-gray-300 flex items-center justify-center">
-                <p className="text-gray-600">Interactive Map Would Be Displayed Here</p>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
-      <Footer />
     </div>
   );
 };

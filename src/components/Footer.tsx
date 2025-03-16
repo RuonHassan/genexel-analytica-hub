@@ -79,9 +79,10 @@ const Footer = () => {
           <div>
             <h3 className="font-semibold text-xl mb-6">Get In Touch</h3>
             <address className="not-italic text-gray-300 mb-4">
-              <p>123 Education Street</p>
-              <p>Cambridge, CB2 1TN</p>
-              <p>United Kingdom</p>
+              <p>167-169 Great Portland Street</p>
+              <p>London</p>
+              <p>England</p>
+              <p>W1W 5PF</p>
             </address>
             <p className="text-gray-300 mb-2">
               <span className="font-medium">Email:</span> enquiries@genexel.com

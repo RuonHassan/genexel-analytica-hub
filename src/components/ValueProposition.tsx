@@ -1,4 +1,3 @@
-
 import { Check, BookOpen, BarChart2, TrendingUp, Award } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
@@ -72,7 +71,7 @@ const ValueProposition = () => {
               Why Choose Genexel
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-analytics-950 mb-6">
-              Specialized in Higher Education Data Analytics
+              Specialised in Higher Education Data Analytics
             </h2>
             <p className="text-gray-600 mb-8 text-lg">
               Genexel stands at the intersection of educational research and advanced data science. We understand the unique challenges facing higher education institutions and provide tailored analytical solutions.
