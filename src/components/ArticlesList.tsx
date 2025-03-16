@@ -17,6 +17,7 @@ export function ArticlesList() {
   const [articles, setArticles] = useState<Article[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [editingArticle, setEditingArticle] = useState<Article | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const fetchArticles = async () => {
     try {
@@ -48,13 +49,39 @@ export function ArticlesList() {
   };
 
   const handleEdit = (article: Article) => {
-    setEditingArticle(article);
+    console.log('Editing article:', article);
+    setTimeout(() => {
+      setEditingArticle(article);
+      setIsDialogOpen(true);
+      console.log('Dialog should be open now with article:', article.id);
+    }, 0);
   };
 
   const handleEditComplete = () => {
     setEditingArticle(null);
+    setIsDialogOpen(false);
     fetchArticles();
   };
+
+  const handleDialogChange = (open: boolean) => {
+    console.log('Dialog open change requested:', open);
+    if (!open) {
+      // Only close the dialog, but keep the article data until animation completes
+      setIsDialogOpen(false);
+      // Clear the article data after the dialog closing animation
+      setTimeout(() => {
+        setEditingArticle(null);
+        console.log('Article data cleared after dialog closed');
+      }, 300); // Match the dialog animation duration
+    } else {
+      setIsDialogOpen(open);
+    }
+  };
+
+  useEffect(() => {
+    console.log('Dialog open state:', isDialogOpen);
+    console.log('Editing article:', editingArticle?.id);
+  }, [isDialogOpen, editingArticle]);
 
   if (isLoading) {
     return <div className="text-center py-8">Loading articles...</div>;
@@ -112,17 +139,22 @@ export function ArticlesList() {
         ))}
       </div>
 
-      <Dialog open={!!editingArticle} onOpenChange={() => setEditingArticle(null)}>
-        <DialogContent className="max-w-3xl">
+      <Dialog 
+        open={isDialogOpen} 
+        onOpenChange={handleDialogChange}
+      >
+        <DialogContent className="max-w-5xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Article</DialogTitle>
           </DialogHeader>
           {editingArticle && (
-            <ArticleForm
-              article={editingArticle}
-              onSuccess={handleEditComplete}
-              onCancel={() => setEditingArticle(null)}
-            />
+            <div className="py-4">
+              <ArticleForm
+                article={editingArticle}
+                onSuccess={handleEditComplete}
+                onCancel={() => handleDialogChange(false)}
+              />
+            </div>
           )}
         </DialogContent>
       </Dialog>

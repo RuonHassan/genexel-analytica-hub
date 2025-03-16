@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect, useRef } from 'react';
 import { useEditor, EditorContent, BubbleMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
@@ -12,6 +12,14 @@ import TableRow from '@tiptap/extension-table-row';
 import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import { Button } from './ui/button';
+import { Input } from './ui/input';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import { 
   Bold, 
   Italic, 
@@ -29,12 +37,15 @@ import {
   Highlighter,
   Undo,
   Redo,
-  PilcrowSquare
+  PilcrowSquare,
+  Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import MarkdownIt from 'markdown-it';
-// @ts-ignore - html-to-markdown doesn't have TypeScript definitions
-import { convert } from 'html-to-markdown';
+import { markdownToHtml, htmlToMarkdown } from '@/lib/markdown-utils';
+import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Label } from "@/components/ui/label";
+import { uploadImage } from '@/lib/supabase';
 
 interface RichTextEditorProps {
   content: string;
@@ -44,33 +55,73 @@ interface RichTextEditorProps {
 
 const RichTextEditor = ({ content, onChange, placeholder = 'Start writing...' }: RichTextEditorProps) => {
   const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
   const [imageUrl, setImageUrl] = useState('');
-  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isUploading, setIsUploading] = useState(false);
   
-  // Initialize markdown parser
-  const md = new MarkdownIt({
-    html: false,
-    breaks: true,
-    linkify: true,
-  });
-
-  // Convert markdown to HTML for the editor
-  const markdownToHtml = (markdown: string) => {
-    if (!markdown) return '';
-    return md.render(markdown);
-  };
-
-  // Convert editor HTML to markdown
-  const htmlToMarkdown = (html: string) => {
-    if (!html) return '';
-    return convert(html);
-  };
-
   const editor = useEditor({
     extensions: [
-      StarterKit,
-      Image,
+      StarterKit.configure({
+        bold: {
+          HTMLAttributes: {
+            class: 'font-bold',
+          },
+        },
+        italic: {
+          HTMLAttributes: {
+            class: 'italic',
+          },
+        },
+        bulletList: {
+          HTMLAttributes: {
+            class: 'list-disc list-outside ml-4 my-4 space-y-1',
+          },
+        },
+        orderedList: {
+          HTMLAttributes: {
+            class: 'list-decimal list-outside ml-4 my-4 space-y-1',
+          },
+        },
+        listItem: {
+          HTMLAttributes: {
+            class: 'pl-1 mb-1',
+          },
+        },
+        paragraph: {
+          HTMLAttributes: {
+            class: 'my-4 leading-relaxed min-h-[1.5em]',
+          },
+        },
+        heading: {
+          levels: [1, 2, 3],
+          HTMLAttributes: {
+            class: 'font-bold',
+          },
+        },
+        blockquote: {
+          HTMLAttributes: {
+            class: 'border-l-4 border-gray-300 pl-4 italic my-6 py-1',
+          },
+        },
+        code: {
+          HTMLAttributes: {
+            class: 'font-mono bg-gray-100 px-1 rounded text-sm',
+          },
+        },
+        horizontalRule: {
+          HTMLAttributes: {
+            class: 'my-8 border-t border-gray-300',
+          },
+        },
+      }),
+      Image.configure({
+        HTMLAttributes: {
+          class: 'max-w-full h-auto',
+        },
+      }),
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
@@ -98,47 +149,164 @@ const RichTextEditor = ({ content, onChange, placeholder = 'Start writing...' }:
       TableCell,
       TableHeader,
     ],
-    content: markdownToHtml(content),
+    content: (() => {
+      try {
+        return markdownToHtml(content);
+      } catch (error) {
+        console.error('Error converting initial content to HTML:', error);
+        // Return the content as-is if conversion fails
+        return content;
+      }
+    })(),
     onUpdate: ({ editor }) => {
-      const html = editor.getHTML();
-      const markdown = htmlToMarkdown(html);
-      onChange(markdown);
+      try {
+        const html = editor.getHTML();
+        const markdown = htmlToMarkdown(html);
+        onChange(markdown);
+      } catch (error) {
+        console.error('Error in editor update:', error);
+        // If conversion fails, at least try to get the raw HTML
+        onChange(editor.getHTML());
+      }
+    },
+    editorProps: {
+      attributes: {
+        class: 'prose prose-sm sm:prose lg:prose-lg xl:prose-xl focus:outline-none',
+      },
+      handleKeyDown: (view, event) => {
+        // We'll let the default behavior handle Enter key
+        // This is just a hook if we need custom behavior in the future
+        return false;
+      },
     },
   });
 
   // Update editor content when the content prop changes
   useEffect(() => {
-    if (editor && content !== htmlToMarkdown(editor.getHTML())) {
-      editor.commands.setContent(markdownToHtml(content));
+    if (editor && content) {
+      try {
+        const currentContent = htmlToMarkdown(editor.getHTML());
+        if (content !== currentContent) {
+          const html = markdownToHtml(content);
+          editor.commands.setContent(html);
+        }
+      } catch (error) {
+        console.error('Error updating editor content:', error);
+        // Fallback to setting content directly if conversion fails
+        try {
+          editor.commands.setContent(content);
+        } catch (innerError) {
+          console.error('Fallback content setting also failed:', innerError);
+        }
+      }
     }
   }, [content, editor]);
 
-  // Helper functions for link and image handling
-  const setLink = useCallback(() => {
+  const handleSetLink = useCallback(() => {
     if (!editor) return;
-    if (linkUrl === '') {
-      editor.chain().focus().extendMarkRange('link').unsetLink().run();
+
+    try {
+      if (linkUrl) {
+        // Validate URL
+        new URL(linkUrl);
+        
+        editor
+          .chain()
+          .focus()
+          .extendMarkRange('link')
+          .setLink({ href: linkUrl })
+          .run();
+        
+        toast.success('Link added successfully');
+      } else {
+        editor.chain().focus().extendMarkRange('link').unsetLink().run();
+        toast.success('Link removed');
+      }
+    } catch (e) {
+      toast.error('Please enter a valid URL');
       return;
     }
-    // Update link
-    editor
-      .chain()
-      .focus()
-      .extendMarkRange('link')
-      .setLink({ href: linkUrl })
-      .run();
+
     setLinkUrl('');
     setIsLinkModalOpen(false);
   }, [editor, linkUrl]);
 
-  const addImage = useCallback(() => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select an image file');
+        return;
+      }
+      setSelectedFile(file);
+    }
+  };
+
+  const handleAddImage = async () => {
     if (!editor) return;
-    if (imageUrl) {
-      editor.chain().focus().setImage({ src: imageUrl }).run();
+
+    if (selectedFile) {
+      try {
+        setIsUploading(true);
+        
+        // First, upload the image to Supabase storage
+        const imageUrl = await uploadImage(selectedFile, 'article-images');
+        
+        // Log the URL for debugging
+        console.log('Image uploaded to Supabase. URL:', imageUrl);
+        
+        // Then insert the image URL into the editor
+        editor
+          .chain()
+          .focus()
+          .setImage({ 
+            src: imageUrl,
+            alt: selectedFile.name,
+            title: selectedFile.name
+          })
+          .run();
+        
+        toast.success('Image uploaded and added successfully');
+        setSelectedFile(null);
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        setIsImageModalOpen(false);
+      } catch (error) {
+        console.error('Error uploading image:', error);
+        toast.error('Failed to upload image. Please try again.');
+      } finally {
+        setIsUploading(false);
+      }
+      return;
+    }
+
+    try {
+      if (!imageUrl) {
+        toast.error('Please enter an image URL or select a file');
+        return;
+      }
+
+      // Validate URL
+      new URL(imageUrl);
+      
+      editor
+        .chain()
+        .focus()
+        .setImage({ 
+          src: imageUrl,
+          alt: 'Image',
+          title: 'Image'
+        })
+        .run();
+      
+      toast.success('Image added successfully');
       setImageUrl('');
       setIsImageModalOpen(false);
+    } catch (e) {
+      toast.error('Please enter a valid image URL');
     }
-  }, [editor, imageUrl]);
+  };
 
   // Toolbar item style 
   const toolbarItemClass = "p-1.5 rounded hover:bg-gray-200 transition-colors";
@@ -149,9 +317,9 @@ const RichTextEditor = ({ content, onChange, placeholder = 'Start writing...' }:
   }
 
   return (
-    <div className="border rounded-md overflow-hidden">
+    <div className="border rounded-md overflow-hidden w-full">
       {/* Main toolbar */}
-      <div className="flex flex-wrap gap-1 p-2 border-b bg-gray-50">
+      <div className="flex flex-wrap gap-1 p-2 border-b bg-gray-50 w-full overflow-x-auto">
         <div className="flex items-center space-x-1 pr-2 border-r">
           <button
             type="button"
@@ -301,63 +469,107 @@ const RichTextEditor = ({ content, onChange, placeholder = 'Start writing...' }:
         </div>
       </div>
 
-      {/* Link Modal */}
-      {isLinkModalOpen && (
-        <div className="p-3 border-b bg-gray-50">
-          <div className="flex items-center space-x-2">
-            <input
-              type="url"
-              value={linkUrl}
-              onChange={e => setLinkUrl(e.target.value)}
-              placeholder="https://example.com"
-              className="flex-1 p-2 border rounded"
-              autoFocus
-            />
-            <Button
-              onClick={setLink}
-              size="sm"
-            >
-              Save
-            </Button>
-            <Button
-              onClick={() => setIsLinkModalOpen(false)}
-              variant="outline"
-              size="sm"
-            >
+      {/* Link Dialog */}
+      <Dialog open={isLinkModalOpen} onOpenChange={setIsLinkModalOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Link</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid gap-2">
+              <Input
+                id="url"
+                placeholder="https://example.com"
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                autoFocus
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsLinkModalOpen(false)}>
               Cancel
             </Button>
-          </div>
-        </div>
-      )}
+            <Button onClick={handleSetLink}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
-      {/* Image Modal */}
-      {isImageModalOpen && (
-        <div className="p-3 border-b bg-gray-50">
-          <div className="flex items-center space-x-2">
-            <input
-              type="url"
-              value={imageUrl}
-              onChange={e => setImageUrl(e.target.value)}
-              placeholder="https://example.com/image.jpg"
-              className="flex-1 p-2 border rounded"
-              autoFocus
-            />
-            <Button
-              onClick={addImage}
-              size="sm"
-            >
-              Add
-            </Button>
-            <Button
-              onClick={() => setIsImageModalOpen(false)}
-              variant="outline"
-              size="sm"
-            >
+      {/* Image Dialog */}
+      <Dialog open={isImageModalOpen} onOpenChange={(open) => {
+        setIsImageModalOpen(open);
+        if (!open) {
+          setSelectedFile(null);
+          setImageUrl('');
+          if (fileInputRef.current) {
+            fileInputRef.current.value = '';
+          }
+        }
+      }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add Image</DialogTitle>
+          </DialogHeader>
+          <Tabs defaultValue="upload" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="upload">Upload</TabsTrigger>
+              <TabsTrigger value="url">URL</TabsTrigger>
+            </TabsList>
+            <TabsContent value="upload" className="mt-4">
+              <div className="grid gap-4">
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="image">Upload Image</Label>
+                  <Input
+                    id="image"
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    disabled={isUploading}
+                  />
+                </div>
+                {selectedFile && (
+                  <p className="text-sm text-gray-500">
+                    Selected: {selectedFile.name}
+                  </p>
+                )}
+              </div>
+            </TabsContent>
+            <TabsContent value="url" className="mt-4">
+              <div className="grid gap-4">
+                <div className="grid w-full items-center gap-1.5">
+                  <Label htmlFor="imageUrl">Image URL</Label>
+                  <Input
+                    id="imageUrl"
+                    placeholder="https://example.com/image.jpg"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    disabled={isUploading}
+                  />
+                </div>
+              </div>
+            </TabsContent>
+          </Tabs>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsImageModalOpen(false)} disabled={isUploading}>
               Cancel
             </Button>
-          </div>
-        </div>
-      )}
+            <Button 
+              onClick={handleAddImage}
+              disabled={(!imageUrl && !selectedFile) || isUploading}
+            >
+              {isUploading ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  Uploading...
+                </>
+              ) : (
+                'Add Image'
+              )}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {/* Bubble menu for quick formatting when text is selected */}
       {editor && (
@@ -405,7 +617,33 @@ const RichTextEditor = ({ content, onChange, placeholder = 'Start writing...' }:
       {/* The actual editor content */}
       <EditorContent 
         editor={editor} 
-        className="prose max-w-none p-4 min-h-[300px] focus:outline-none" 
+        className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl w-full max-w-none p-4 min-h-[300px] focus:outline-none overflow-x-auto
+          [&_.ProseMirror]:min-h-[250px] 
+          [&_.ProseMirror]:max-w-none
+          [&_.ProseMirror]:w-full
+          [&_.ProseMirror_ul]:list-disc [&_.ProseMirror_ul]:ml-4 [&_.ProseMirror_ul]:my-4
+          [&_.ProseMirror_ol]:list-decimal [&_.ProseMirror_ol]:ml-4 [&_.ProseMirror_ol]:my-4
+          [&_.ProseMirror_li]:mb-1 [&_.ProseMirror_li]:pl-1
+          [&_.ProseMirror_h1]:text-3xl [&_.ProseMirror_h1]:font-bold [&_.ProseMirror_h1]:my-6
+          [&_.ProseMirror_h2]:text-2xl [&_.ProseMirror_h2]:font-bold [&_.ProseMirror_h2]:my-5
+          [&_.ProseMirror_h3]:text-xl [&_.ProseMirror_h3]:font-bold [&_.ProseMirror_h3]:my-4
+          [&_.ProseMirror_p]:my-4 [&_.ProseMirror_p]:leading-relaxed [&_.ProseMirror_p]:min-h-[1.5em]
+          [&_.ProseMirror_p:empty]:min-h-[1.5em] [&_.ProseMirror_p:empty]:before:content-['_'] [&_.ProseMirror_p:empty]:before:opacity-0
+          [&_.ProseMirror_p+p]:mt-4
+          [&_.ProseMirror_blockquote]:border-l-4 [&_.ProseMirror_blockquote]:border-gray-300 [&_.ProseMirror_blockquote]:pl-4 [&_.ProseMirror_blockquote]:italic [&_.ProseMirror_blockquote]:my-6 [&_.ProseMirror_blockquote]:py-1
+          [&_.ProseMirror_pre]:bg-gray-100 [&_.ProseMirror_pre]:p-4 [&_.ProseMirror_pre]:rounded-md [&_.ProseMirror_pre]:my-4 [&_.ProseMirror_pre]:overflow-auto
+          [&_.ProseMirror_code]:font-mono [&_.ProseMirror_code]:bg-gray-100 [&_.ProseMirror_code]:px-1 [&_.ProseMirror_code]:rounded [&_.ProseMirror_code]:text-sm
+          [&_.ProseMirror_img]:max-w-full [&_.ProseMirror_img]:h-auto [&_.ProseMirror_img]:my-6 [&_.ProseMirror_img]:mx-auto
+          [&_.ProseMirror_a]:text-blue-600 [&_.ProseMirror_a]:underline [&_.ProseMirror_a]:font-medium
+          [&_.ProseMirror_strong]:font-bold [&_.ProseMirror_b]:font-bold
+          [&_.ProseMirror_em]:italic [&_.ProseMirror_i]:italic
+          [&_.ProseMirror_u]:underline
+          [&_.ProseMirror_table]:border-collapse [&_.ProseMirror_table]:w-full [&_.ProseMirror_table]:my-6
+          [&_.ProseMirror_th]:border [&_.ProseMirror_th]:border-gray-300 [&_.ProseMirror_th]:p-2 [&_.ProseMirror_th]:bg-gray-100 [&_.ProseMirror_th]:font-semibold
+          [&_.ProseMirror_td]:border [&_.ProseMirror_td]:border-gray-300 [&_.ProseMirror_td]:p-2
+          [&_.ProseMirror_mark]:bg-yellow-200 [&_.ProseMirror_mark]:p-0 [&_.ProseMirror_mark]:rounded-sm
+          [&_.ProseMirror_hr]:my-8 [&_.ProseMirror_hr]:border-t [&_.ProseMirror_hr]:border-gray-300
+        "
       />
     </div>
   );

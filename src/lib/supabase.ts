@@ -120,21 +120,50 @@ export const getReports = async (): Promise<Report[]> => {
 
 // Helper function to upload image
 export async function uploadImage(file: File, bucket: string) {
-  const fileExt = file.name.split('.').pop();
-  const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-  const filePath = `${fileName}`;
+  try {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+    const filePath = `${fileName}`;
 
-  const { data, error } = await supabase.storage
-    .from(bucket)
-    .upload(filePath, file);
+    // Upload file to Supabase
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload(filePath, file, {
+        cacheControl: '3600',
+        upsert: false
+      });
 
-  if (error) throw error;
+    if (error) {
+      console.error('Error uploading to Supabase:', error);
+      throw error;
+    }
 
-  const { data: { publicUrl } } = supabase.storage
-    .from(bucket)
-    .getPublicUrl(filePath);
+    // Generate a download URL instead of publicUrl
+    const { data: downloadData, error: downloadError } = await supabase.storage
+      .from(bucket)
+      .createSignedUrl(filePath, 60 * 60 * 24 * 365); // 1 year expiry
 
-  return publicUrl;
+    if (downloadError) {
+      console.error('Error creating signed URL:', downloadError);
+      throw downloadError;
+    }
+
+    const signedUrl = downloadData.signedUrl;
+    console.log('Generated signed URL:', signedUrl);
+
+    // Also get the public URL as a fallback
+    const { data: { publicUrl } } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(filePath);
+    
+    console.log('Generated public URL:', publicUrl);
+    console.log('File path uploaded:', filePath);
+    
+    return signedUrl || publicUrl;
+  } catch (error) {
+    console.error('Error in uploadImage function:', error);
+    throw error;
+  }
 }
 
 // Helper function to create a URL-friendly slug
@@ -147,21 +176,6 @@ const createSlug = (title: string): string => {
 
 // Helper function to create or update an article
 export async function upsertArticle(article: Omit<Article, 'id' | 'created_at' | 'updated_at'> & { id?: string }) {
-  // Check authentication status
-  const { data: { session }, error: authError } = await supabase.auth.getSession();
-  
-  if (authError) {
-    console.error('Authentication error:', authError);
-    throw new Error('Not authenticated');
-  }
-
-  if (!session) {
-    console.error('No active session found');
-    throw new Error('Not authenticated');
-  }
-
-  console.log('Current user:', session.user.id);
-  
   // Generate slug from title if not provided
   const slug = article.slug || createSlug(article.title);
   
@@ -172,17 +186,12 @@ export async function upsertArticle(article: Omit<Article, 'id' | 'created_at' |
         ...article,
         slug,
         updated_at: new Date().toISOString(),
-        user_id: session.user.id, // Add the user_id to the article
       }
     ])
     .select()
     .single();
 
-  if (error) {
-    console.error('Error upserting article:', error);
-    throw error;
-  }
-  
+  if (error) throw error;
   return data;
 }
 

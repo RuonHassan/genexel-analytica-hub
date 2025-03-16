@@ -29,7 +29,7 @@ const ArticlesGrid = ({
       }),
       author: "Staff Writer", // Default author since we don't have this in DB yet
       category: article.category,
-      imageUrl: article.thumbnail_url || "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
+      imageUrl: article.image_url || article.thumbnail_url || "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
       slug: article.slug || article.id,
     };
   };

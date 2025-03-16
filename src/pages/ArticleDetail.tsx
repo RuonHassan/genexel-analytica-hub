@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import { CalendarIcon, User2, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
+import RichTextRenderer from '@/components/RichTextRenderer';
 
 const ArticleDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -116,9 +117,7 @@ const ArticleDetail = () => {
           </div>
         )}
         
-        <div className="prose max-w-none">
-          {article.content}
-        </div>
+        <RichTextRenderer content={article.content} />
       </div>
     </div>
   );

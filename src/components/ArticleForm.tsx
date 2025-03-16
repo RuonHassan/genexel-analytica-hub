@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -39,6 +39,21 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
       slug: article?.slug || '',
     },
   });
+
+  useEffect(() => {
+    if (article?.content) {
+      setContent(article.content);
+    }
+    
+    form.reset({
+      title: article?.title || '',
+      summary: article?.summary || '',
+      category: article?.category || '',
+      slug: article?.slug || '',
+    });
+    
+    setPreviewImage(article?.image_url || null);
+  }, [article, form]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -95,7 +110,7 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
   }
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>{article ? 'Edit Article' : 'Create New Article'}</CardTitle>
       </CardHeader>
@@ -170,11 +185,13 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
 
             <div className="space-y-2">
               <FormLabel>Content</FormLabel>
-              <RichTextEditor
-                content={content}
-                onChange={setContent}
-                placeholder="Write your article content here..."
-              />
+              <div className="w-full overflow-hidden border rounded-lg">
+                <RichTextEditor
+                  content={content}
+                  onChange={setContent}
+                  placeholder="Write your article content here..."
+                />
+              </div>
             </div>
 
             <div className="space-y-4">
