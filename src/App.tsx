@@ -1,9 +1,9 @@
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar } from "@/components/Navbar";
 import { Toaster } from "sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import Header from "@/components/Header"; // Use Header instead of Navbar
 
 // Import pages
 import Index from "./pages/Index";
@@ -22,8 +22,8 @@ function App() {
       <TooltipProvider>
         <Router>
           <div className="min-h-screen bg-background">
-            <Navbar />
-            <main className="pt-16"> {/* Added padding top to account for fixed navbar */}
+            <Header /> {/* Use Header instead of Navbar */}
+            <main className="pt-16"> {/* Keep padding for fixed header */}
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/articles" element={<Articles />} />
