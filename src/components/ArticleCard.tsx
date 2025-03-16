@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState, useEffect, useRef } from "react";
 
 interface Article {
-  id: number;
+  id: string; // Changed from number to string to match Supabase
   title: string;
   summary: string;
   date: string;
