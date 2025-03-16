@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 
 interface Report {
-  id: number;
+  id: string; // Changed from number to string to match Supabase
   title: string;
   summary: string;
   date: string;
