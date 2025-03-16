@@ -9,87 +9,64 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ReportCard from "@/components/ReportCard";
 import UploadModal from "@/components/UploadModal";
-
-// Sample data
-const allReports = [
-  {
-    id: 101,
-    title: "Higher Education Enrollment Trends 2023",
-    summary: "Comprehensive analysis of student enrollment patterns across UK universities.",
-    date: "July 10, 2023",
-    price: 299,
-    pages: 78,
-    imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 102,
-    title: "Digital Transformation in University Administration",
-    summary: "Strategic framework for implementing digital solutions in higher education management.",
-    date: "June 15, 2023",
-    price: 349,
-    pages: 92,
-    imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 103,
-    title: "International Student Recruitment: Market Analysis",
-    summary: "Global trends, challenges, and opportunities in attracting international students.",
-    date: "May 02, 2023",
-    price: 499,
-    pages: 125,
-    imageUrl: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 104,
-    title: "Research Funding Landscape: 2023-2025 Forecast",
-    summary: "Projections and analysis of research funding sources and allocation trends.",
-    date: "June 28, 2023",
-    price: 399,
-    pages: 84,
-    imageUrl: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 105,
-    title: "Student Success Metrics: Beyond Graduation Rates",
-    summary: "New frameworks for measuring student outcomes and institutional effectiveness.",
-    date: "April 15, 2023",
-    price: 249,
-    pages: 62,
-    imageUrl: "https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=800",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { Report, getReports } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
 
 const Reports = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [priceFilter, setPriceFilter] = useState("");
-  const [filteredReports, setFilteredReports] = useState(allReports);
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const reportsPerPage = 4;
 
-  // Effect for filtering reports
-  useEffect(() => {
-    let result = allReports;
+  // Fetch reports using React Query
+  const { data: allReports = [], isLoading, error } = useQuery({
+    queryKey: ["reports"],
+    queryFn: getReports,
+  });
+
+  // Apply filters and pagination to reports
+  const getFilteredReports = () => {
+    let filtered = [...allReports];
     
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
-      result = result.filter(
+      filtered = filtered.filter(
         (report) =>
           report.title.toLowerCase().includes(search) ||
-          report.summary.toLowerCase().includes(search)
+          (report.description && report.description.toLowerCase().includes(search)) ||
+          report.category.toLowerCase().includes(search)
       );
     }
     
-    if (priceFilter) {
-      if (priceFilter === "under300") {
-        result = result.filter((report) => report.price < 300);
-      } else if (priceFilter === "300to400") {
-        result = result.filter((report) => report.price >= 300 && report.price <= 400);
-      } else if (priceFilter === "over400") {
-        result = result.filter((report) => report.price > 400);
-      }
+    if (categoryFilter) {
+      filtered = filtered.filter(
+        (report) => report.category.toLowerCase() === categoryFilter.toLowerCase()
+      );
     }
     
-    setFilteredReports(result);
-  }, [searchTerm, priceFilter]);
+    return filtered;
+  };
+
+  const filteredReports = getFilteredReports();
+  
+  // Calculate pagination
+  const indexOfLastReport = currentPage * reportsPerPage;
+  const indexOfFirstReport = indexOfLastReport - reportsPerPage;
+  const currentReports = filteredReports.slice(indexOfFirstReport, indexOfLastReport);
+  const totalPages = Math.ceil(filteredReports.length / reportsPerPage);
+
+  // Get unique categories from the reports
+  const categories = [...new Set(allReports.map(report => report.category))];
 
   // Animation sequence on page load
   useEffect(() => {
@@ -105,11 +82,26 @@ const Reports = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Format report data for ReportCard component
+  const formatReportForCard = (report: Report) => {
+    return {
+      id: report.id,
+      title: report.title,
+      summary: report.description || "",
+      date: new Date(report.created_at).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      price: 299, // Default price since we don't have this in DB yet
+      pages: 42,  // Default pages since we don't have this in DB yet
+      imageUrl: report.thumbnail_url || "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
+    };
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-8 pb-16">
         {/* Hero Banner */}
         <div className="bg-genexel-50 py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center">
@@ -147,15 +139,15 @@ const Reports = () => {
                   className="pl-10"
                 />
               </div>
-              <Select value={priceFilter} onValueChange={setPriceFilter}>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
                 <SelectTrigger className="w-full md:w-[180px]">
-                  <SelectValue placeholder="Price Range" />
+                  <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Prices</SelectItem>
-                  <SelectItem value="under300">Under £300</SelectItem>
-                  <SelectItem value="300to400">£300 - £400</SelectItem>
-                  <SelectItem value="over400">Over £400</SelectItem>
+                  <SelectItem value="">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Button 
@@ -171,18 +163,58 @@ const Reports = () => {
         
         {/* Reports list */}
         <div className="container mx-auto px-4 md:px-6 py-12">
-          {filteredReports.length > 0 ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {filteredReports.map((report, index) => (
-                <div 
-                  key={report.id} 
-                  className="transition-all duration-700 opacity-0 translate-y-8 fade-in-item"
-                  style={{ transitionDelay: `${300 + index * 100}ms` }}
-                >
-                  <ReportCard report={report} />
-                </div>
-              ))}
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">Loading reports...</p>
             </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-500 text-lg">Error loading reports. Please try again.</p>
+            </div>
+          ) : currentReports.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                {currentReports.map((report, index) => (
+                  <div 
+                    key={report.id} 
+                    className="transition-all duration-700 opacity-0 translate-y-8 fade-in-item"
+                    style={{ transitionDelay: `${300 + index * 100}ms` }}
+                  >
+                    <ReportCard report={formatReportForCard(report)} />
+                  </div>
+                ))}
+              </div>
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination className="mt-12">
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} />
+                      </PaginationItem>
+                    )}
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink 
+                          isActive={page === currentPage}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    {currentPage < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">No reports found matching your criteria.</p>
@@ -190,7 +222,7 @@ const Reports = () => {
                 variant="link" 
                 onClick={() => {
                   setSearchTerm("");
-                  setPriceFilter("");
+                  setCategoryFilter("");
                 }}
                 className="mt-2 text-genexel-600"
               >

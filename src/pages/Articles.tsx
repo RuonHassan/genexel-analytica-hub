@@ -8,93 +8,64 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ArticleCard from "@/components/ArticleCard";
 import UploadModal from "@/components/UploadModal";
-
-// Sample data - in a real app this would come from an API
-const allArticles = [
-  {
-    id: 1,
-    title: "The Impact of AI on Higher Education Teaching Methods",
-    summary: "Exploring how artificial intelligence is transforming educational approaches in universities.",
-    date: "May 15, 2023",
-    author: "Dr. Sarah Johnson",
-    category: "Technology",
-    imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 2,
-    title: "Student Engagement in Online Learning Environments",
-    summary: "Research findings on effective strategies for maintaining student engagement in virtual classrooms.",
-    date: "April 28, 2023",
-    author: "Prof. Michael Chen",
-    category: "Learning Design",
-    imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 3,
-    title: "Funding Challenges for Research Universities in 2023",
-    summary: "Analysis of current funding landscapes and strategies for academic research institutions.",
-    date: "June 02, 2023",
-    author: "Dr. Emily Roberts",
-    category: "Research",
-    imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 4,
-    title: "Educational Policy Reforms: Impact on University Governance",
-    summary: "How recent policy changes affect administrative structures in higher education institutions.",
-    date: "May 22, 2023",
-    author: "Prof. David Wilson",
-    category: "Policy",
-    imageUrl: "https://images.unsplash.com/photo-1568792923760-d70635a89fdc?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 5,
-    title: "Data Privacy Concerns in Academic Research",
-    summary: "Ethical considerations and best practices for handling sensitive data in university research projects.",
-    date: "June 15, 2023",
-    author: "Dr. Amanda Taylor",
-    category: "Technology",
-    imageUrl: "https://images.unsplash.com/photo-1423666639041-f56000c27a9a?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 6,
-    title: "Sustainable Campus Initiatives: Case Studies",
-    summary: "Examining successful sustainability programs implemented at leading universities.",
-    date: "April 10, 2023",
-    author: "Dr. James Peterson",
-    category: "Analysis",
-    imageUrl: "https://images.unsplash.com/photo-1528323273322-d81458248d40?auto=format&fit=crop&q=80&w=800",
-  },
-];
+import { useQuery } from "@tanstack/react-query";
+import { Article, getArticles } from "@/lib/supabase";
+import { supabase } from "@/integrations/supabase/client";
+import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationNext, 
+  PaginationPrevious 
+} from "@/components/ui/pagination";
 
 const Articles = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [filteredArticles, setFilteredArticles] = useState(allArticles);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const articlesPerPage = 6;
 
-  // Effect for filtering articles based on search and category
-  useEffect(() => {
-    let result = allArticles;
+  // Fetch articles using React Query
+  const { data: allArticles = [], isLoading, error } = useQuery({
+    queryKey: ["articles"],
+    queryFn: getArticles,
+  });
+
+  // Apply filters and pagination to articles
+  const getFilteredArticles = () => {
+    let filtered = [...allArticles];
     
     if (searchTerm) {
       const search = searchTerm.toLowerCase();
-      result = result.filter(
+      filtered = filtered.filter(
         (article) =>
           article.title.toLowerCase().includes(search) ||
-          article.summary.toLowerCase().includes(search) ||
-          article.author.toLowerCase().includes(search)
+          (article.summary && article.summary.toLowerCase().includes(search)) ||
+          article.category.toLowerCase().includes(search)
       );
     }
     
     if (categoryFilter) {
-      result = result.filter(
+      filtered = filtered.filter(
         (article) => article.category.toLowerCase() === categoryFilter.toLowerCase()
       );
     }
     
-    setFilteredArticles(result);
-  }, [searchTerm, categoryFilter]);
+    return filtered;
+  };
+
+  const filteredArticles = getFilteredArticles();
+  
+  // Calculate pagination
+  const indexOfLastArticle = currentPage * articlesPerPage;
+  const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
+  const currentArticles = filteredArticles.slice(indexOfFirstArticle, indexOfLastArticle);
+  const totalPages = Math.ceil(filteredArticles.length / articlesPerPage);
+
+  // Get unique categories from the articles
+  const categories = [...new Set(allArticles.map(article => article.category))];
 
   // Animation sequence on page load
   useEffect(() => {
@@ -110,11 +81,26 @@ const Articles = () => {
     return () => clearTimeout(timeout);
   }, []);
 
+  // Format article data for ArticleCard component
+  const formatArticleForCard = (article: Article) => {
+    return {
+      id: article.id,
+      title: article.title,
+      summary: article.summary || "",
+      date: new Date(article.created_at).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      author: "Staff Writer", // Default author since we don't have this in DB yet
+      category: article.category,
+      imageUrl: article.image_url || "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
+    };
+  };
+
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
-      
-      <main className="flex-grow pt-24 pb-16">
+      <main className="flex-grow pt-8 pb-16">
         {/* Hero Banner */}
         <div className="bg-analytics-50 py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center">
@@ -142,11 +128,9 @@ const Articles = () => {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="">All Categories</SelectItem>
-                  <SelectItem value="Technology">Technology</SelectItem>
-                  <SelectItem value="Learning Design">Learning Design</SelectItem>
-                  <SelectItem value="Research">Research</SelectItem>
-                  <SelectItem value="Policy">Policy</SelectItem>
-                  <SelectItem value="Analysis">Analysis</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category}>{category}</SelectItem>
+                  ))}
                 </SelectContent>
               </Select>
               <Button 
@@ -162,18 +146,58 @@ const Articles = () => {
         
         {/* Articles list */}
         <div className="container mx-auto px-4 md:px-6 py-12">
-          {filteredArticles.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredArticles.map((article, index) => (
-                <div 
-                  key={article.id} 
-                  className="transition-all duration-700 opacity-0 translate-y-8 fade-in-item"
-                  style={{ transitionDelay: `${300 + index * 100}ms` }}
-                >
-                  <ArticleCard article={article} />
-                </div>
-              ))}
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 text-lg">Loading articles...</p>
             </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-500 text-lg">Error loading articles. Please try again.</p>
+            </div>
+          ) : currentArticles.length > 0 ? (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {currentArticles.map((article, index) => (
+                  <div 
+                    key={article.id} 
+                    className="transition-all duration-700 opacity-0 translate-y-8 fade-in-item"
+                    style={{ transitionDelay: `${300 + index * 100}ms` }}
+                  >
+                    <ArticleCard article={formatArticleForCard(article)} />
+                  </div>
+                ))}
+              </div>
+              
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination className="mt-12">
+                  <PaginationContent>
+                    {currentPage > 1 && (
+                      <PaginationItem>
+                        <PaginationPrevious onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} />
+                      </PaginationItem>
+                    )}
+                    
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                      <PaginationItem key={page}>
+                        <PaginationLink 
+                          isActive={page === currentPage}
+                          onClick={() => setCurrentPage(page)}
+                        >
+                          {page}
+                        </PaginationLink>
+                      </PaginationItem>
+                    ))}
+                    
+                    {currentPage < totalPages && (
+                      <PaginationItem>
+                        <PaginationNext onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} />
+                      </PaginationItem>
+                    )}
+                  </PaginationContent>
+                </Pagination>
+              )}
+            </>
           ) : (
             <div className="text-center py-12">
               <p className="text-gray-500 text-lg">No articles found matching your criteria.</p>
