@@ -48,11 +48,16 @@ export function ReportForm() {
         thumbnailUrl = await uploadImage(thumbnailFile, 'report-thumbnails');
       }
 
-      await upsertReport({
-        ...values,
+      // Make sure all required fields are present
+      const reportData = {
+        title: values.title,
+        description: values.description,
+        category: values.category,
         file_url: fileUrl,
         thumbnail_url: thumbnailUrl,
-      });
+      };
+
+      await upsertReport(reportData);
 
       toast.success('Report saved successfully!');
       form.reset();
@@ -148,4 +153,4 @@ export function ReportForm() {
       </CardContent>
     </Card>
   );
-} 
+}

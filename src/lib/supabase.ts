@@ -51,7 +51,7 @@ export async function uploadImage(file: File, bucket: string) {
 }
 
 // Helper function to create or update an article
-export async function upsertArticle(article: Omit<Article, 'id' | 'created_at' | 'updated_at'>) {
+export async function upsertArticle(article: Omit<Article, 'id' | 'created_at' | 'updated_at'> & { id?: string }) {
   const { data, error } = await supabase
     .from('articles')
     .upsert([
@@ -124,4 +124,4 @@ export async function deleteReport(id: string) {
     .eq('id', id);
 
   if (error) throw error;
-} 
+}

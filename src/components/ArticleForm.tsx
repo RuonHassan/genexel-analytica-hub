@@ -60,11 +60,26 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
         imageUrl = await uploadImage(imageFile, 'article-images');
       }
 
-      await upsertArticle({
-        ...values,
+      // Make sure all required fields are present
+      const articleData = {
+        title: values.title,
+        content: values.content,
+        summary: values.summary,
+        category: values.category,
+        slug: values.slug,
         image_url: imageUrl,
-        ...(article && { id: article.id }), // Include ID if editing
-      });
+      };
+
+      if (article?.id) {
+        // If we're editing an existing article
+        await upsertArticle({
+          ...articleData,
+          id: article.id
+        });
+      } else {
+        // If we're creating a new article
+        await upsertArticle(articleData);
+      }
 
       toast.success(article ? 'Article updated successfully!' : 'Article created successfully!');
       form.reset();
@@ -205,4 +220,4 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
       </CardContent>
     </Card>
   );
-} 
+}
