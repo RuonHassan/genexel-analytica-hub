@@ -185,13 +185,11 @@ export function ArticleForm({ article, onSuccess, onCancel }: ArticleFormProps) 
 
             <div className="space-y-2">
               <FormLabel>Content</FormLabel>
-              <div className="w-full overflow-hidden border rounded-lg">
-                <RichTextEditor
-                  content={content}
-                  onChange={setContent}
-                  placeholder="Write your article content here..."
-                />
-              </div>
+              <RichTextEditor
+                content={content}
+                onChange={setContent}
+                placeholder="Write your article content here..."
+              />
             </div>
 
             <div className="space-y-4">
