@@ -17,15 +17,15 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    },
-  },
-  optimizeDeps: {
-    include: ['zod']
+    }
   },
   build: {
     target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
     commonjsOptions: {
       include: [/node_modules/]
     }
+  },
+  optimizeDeps: {
+    include: ['zod']
   }
 }));
