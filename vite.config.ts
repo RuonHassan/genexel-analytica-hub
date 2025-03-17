@@ -4,7 +4,7 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command, mode }) => ({
+export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
@@ -23,17 +23,13 @@ export default defineConfig(({ command, mode }) => ({
     include: ['zod']
   },
   build: {
+    target: 'esnext',
+    modulePreload: true,
+    minify: true,
+    sourcemap: false,
     commonjsOptions: {
-      include: [/node_modules/]
-    },
-    rollupOptions: {
-      external: ['zod'],
-      output: {
-        globals: {
-          'zod': 'Zod'
-        },
-        format: command === 'build' ? 'iife' : 'es'
-      }
+      include: [/node_modules/],
+      transformMixedEsModules: true
     }
   }
 }));
