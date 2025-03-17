@@ -22,23 +22,15 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
     rollupOptions: {
-      external: [],
+      external: ['zod'],
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            if (id.includes('zod')) {
-              return 'zod';
-            }
-            return 'vendor';
-          }
+        globals: {
+          zod: 'zod'
         }
       }
     }
   },
   optimizeDeps: {
-    include: ['zod'],
-    esbuildOptions: {
-      target: 'es2020'
-    }
+    include: ['zod']
   }
 }));
