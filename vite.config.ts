@@ -33,12 +33,9 @@ export default defineConfig(({ mode }) => ({
       transformMixedEsModules: true
     },
     rollupOptions: {
-      external: ['zod'],
       output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
+        manualChunks: {
+          vendor: ['zod'],
         }
       }
     }
