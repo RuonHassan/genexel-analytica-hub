@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
+import ScrollToTop from "@/components/ScrollToTop";
 
 // Import pages
 import Index from "./pages/Index";
@@ -33,10 +34,12 @@ const queryClient = new QueryClient({
       retry: 1,
       refetchOnWindowFocus: false,
       staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+    mutations: {
       onError: (error) => {
         console.error('React Query error:', error);
       }
-    },
+    }
   },
 });
 
@@ -46,6 +49,7 @@ function App() {
       <TooltipProvider>
         <AuthProvider>
           <Router>
+            <ScrollToTop />
             <div className="min-h-screen bg-background flex flex-col">
               <Header />
               <main className="flex-grow pt-16"> {/* Add pt-16 to account for fixed header */}

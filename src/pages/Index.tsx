@@ -1,15 +1,9 @@
-import { useEffect } from "react";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import ValueProposition from "@/components/ValueProposition";
 import FeaturedContent from "@/components/FeaturedContent";
 
 const Index = () => {
-  // Smooth scrolling effect for page load
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
