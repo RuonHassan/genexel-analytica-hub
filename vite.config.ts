@@ -17,12 +17,10 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "zod": path.resolve(__dirname, "node_modules/zod"),
       stream: 'stream-browserify',
       util: 'util',
       process: 'process/browser',
-      buffer: 'buffer',
-      global: path.resolve(__dirname, 'src/lib/global.js')
+      buffer: 'buffer'
     },
     mainFields: ['browser', 'module', 'jsnext:main', 'jsnext', 'main']
   },
@@ -32,14 +30,36 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: 'es2020',
+    commonjsOptions: {
+      transformMixedEsModules: true,
+      include: [/node_modules/]
+    },
     rollupOptions: {
       onwarn(warning, warn) {
         if (warning.code === 'UNRESOLVED_IMPORT') return;
         warn(warning);
+      },
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            return 'vendor';
+          }
+        }
       }
     }
   },
   optimizeDeps: {
-    include: ['zod', '@hookform/resolvers/zod', 'buffer', 'process/browser']
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    },
+    include: [
+      'zod', 
+      '@hookform/resolvers/zod', 
+      'buffer', 
+      'process/browser',
+      '@supabase/supabase-js'
+    ]
   }
 }));
