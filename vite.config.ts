@@ -17,9 +17,7 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "zod": path.resolve(__dirname, "node_modules/zod")
     },
-    dedupe: ['zod']
   },
   optimizeDeps: {
     include: ['zod'],
@@ -35,10 +33,10 @@ export default defineConfig(({ mode }) => ({
       transformMixedEsModules: true
     },
     rollupOptions: {
-      treeshake: true,
+      external: ['zod'],
       output: {
         manualChunks(id) {
-          if (id.includes('node_modules/zod')) {
+          if (id.includes('node_modules')) {
             return 'vendor';
           }
         }
