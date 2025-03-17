@@ -21,16 +21,15 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
-    rollupOptions: {
-      external: ['zod'],
-      output: {
-        globals: {
-          zod: 'zod'
-        }
-      }
+    commonjsOptions: {
+      include: [/node_modules/],
+      transformMixedEsModules: true
     }
   },
   optimizeDeps: {
-    include: ['zod']
+    include: ['zod'],
+    esbuildOptions: {
+      target: 'es2020'
+    }
   }
 }));
