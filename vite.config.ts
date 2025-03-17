@@ -21,11 +21,24 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
-    commonjsOptions: {
-      include: [/node_modules/]
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (id.includes('zod')) {
+              return 'zod';
+            }
+            return 'vendor';
+          }
+        }
+      }
     }
   },
   optimizeDeps: {
-    include: ['zod']
+    include: ['zod'],
+    esbuildOptions: {
+      target: 'es2020'
+    }
   }
 }));

@@ -1,7 +1,7 @@
 /**
  * This file exports zod functionality for use throughout the application.
  */
-import * as z from 'zod';
+import { z } from 'zod';
 
 // Export both named and default exports to support different import styles
 export { z };
