@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, BarChart2, FileText, BarChart } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -81,16 +82,22 @@ const Hero = () => {
             <Button 
               size="lg" 
               className="bg-genexel-600 hover:bg-genexel-700 text-white px-8"
+              asChild
             >
-              Explore Reports
-              <ArrowRight className="ml-2 h-4 w-4" />
+              <Link to="/reports">
+                Explore Reports
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
             </Button>
             <Button 
               variant="outline" 
               size="lg" 
               className="bg-white border-genexel-200 text-genexel-800 hover:bg-genexel-50"
+              asChild
             >
-              Learn More
+              <Link to="/about">
+                Learn More
+              </Link>
             </Button>
           </div>
         </div>
