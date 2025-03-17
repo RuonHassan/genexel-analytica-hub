@@ -17,25 +17,20 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    }
+      "zod": path.resolve(__dirname, "node_modules/zod")
+    },
+    mainFields: ['module', 'jsnext:main', 'jsnext', 'main']
   },
   build: {
-    commonjsOptions: {
-      include: [/node_modules/],
-      transformMixedEsModules: true
-    },
+    target: 'es2020',
     rollupOptions: {
-      output: {
-        manualChunks(id) {
-          if (id.includes('node_modules')) {
-            return 'vendor';
-          }
-        }
+      onwarn(warning, warn) {
+        if (warning.code === 'UNRESOLVED_IMPORT') return;
+        warn(warning);
       }
     }
   },
   optimizeDeps: {
-    include: ['zod', '@hookform/resolvers/zod'],
-    force: true
+    include: ['zod', '@hookform/resolvers/zod']
   }
 }));
