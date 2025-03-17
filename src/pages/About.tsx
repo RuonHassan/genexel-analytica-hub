@@ -16,7 +16,7 @@ const About = () => {
                 About Genexel Analytics
               </h1>
               <p className="text-xl text-gray-600">
-                Pioneering data analytics solutions for higher education institutions since 2010
+                Data analytics solutions for higher education institutions.
               </p>
             </div>
           </div>
