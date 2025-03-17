@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
@@ -6,64 +5,39 @@ import { cn } from "@/lib/utils";
 import ArticleCard from "./ArticleCard";
 import ReportCard from "./ReportCard";
 import { Link } from "react-router-dom";
-
-// Sample data
-const sampleArticles = [
-  {
-    id: 1,
-    title: "The Impact of AI on Higher Education Teaching Methods",
-    summary: "Exploring how artificial intelligence is transforming educational approaches in universities.",
-    date: "May 15, 2023",
-    author: "Dr. Sarah Johnson",
-    category: "Technology",
-    imageUrl: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 2,
-    title: "Student Engagement in Online Learning Environments",
-    summary: "Research findings on effective strategies for maintaining student engagement in virtual classrooms.",
-    date: "April 28, 2023",
-    author: "Prof. Michael Chen",
-    category: "Learning Design",
-    imageUrl: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 3,
-    title: "Funding Challenges for Research Universities in 2023",
-    summary: "Analysis of current funding landscapes and strategies for academic research institutions.",
-    date: "June 02, 2023",
-    author: "Dr. Emily Roberts",
-    category: "Research",
-    imageUrl: "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800",
-  },
-];
-
-const sampleReports = [
-  {
-    id: 101,
-    title: "Higher Education Enrollment Trends 2023",
-    summary: "Comprehensive analysis of student enrollment patterns across UK universities.",
-    date: "July 10, 2023",
-    price: 299,
-    pages: 78,
-    imageUrl: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&q=80&w=800",
-  },
-  {
-    id: 102,
-    title: "Digital Transformation in University Administration",
-    summary: "Strategic framework for implementing digital solutions in higher education management.",
-    date: "June 15, 2023",
-    price: 349,
-    pages: 92,
-    imageUrl: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=800",
-  },
-];
+import { getArticles, getReports, Article, Report } from "@/lib/supabase";
 
 const FeaturedContent = () => {
   const [activeTab, setActiveTab] = useState<"articles" | "reports">("articles");
   const [isVisible, setIsVisible] = useState(false);
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [reports, setReports] = useState<Report[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const sectionRef = useRef<HTMLDivElement>(null);
 
+  // Fetch articles and reports from Supabase
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const [articlesData, reportsData] = await Promise.all([
+          getArticles(),
+          getReports()
+        ]);
+        
+        setArticles(articlesData.slice(0, 3)); // Limit to 3 articles
+        setReports(reportsData.slice(0, 3)); // Limit to 3 reports
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Intersection observer for animation
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -87,6 +61,58 @@ const FeaturedContent = () => {
       }
     };
   }, []);
+
+  // Transform Supabase articles to match ArticleCard component props
+  const transformedArticles = articles.map(article => ({
+    id: article.id,
+    title: article.title,
+    summary: article.summary || article.description || '',
+    date: new Date(article.created_at).toLocaleDateString('en-US', {
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    }),
+    author: "Genexel Analytics",
+    category: article.category,
+    imageUrl: article.thumbnail_url || article.image_url || '',
+    slug: article.slug
+  }));
+
+  // Transform Supabase reports to match ReportCard component props
+  const transformedReports = reports.map(report => ({
+    id: report.id,
+    title: report.title,
+    summary: report.summary,
+    date: report.date || new Date(report.created_at).toLocaleDateString('en-US', {
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric'
+    }),
+    category: report.category,
+    imageUrl: report.thumbnail_url
+  }));
+
+  // Loading and empty state components
+  const LoadingState = () => (
+    <div className="flex justify-center items-center py-12">
+      <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-genexel-600"></div>
+    </div>
+  );
+
+  const EmptyState = () => (
+    <div className="flex flex-col items-center justify-center py-12 px-4 text-center">
+      <div className="rounded-full bg-gray-100 p-4 mb-4">
+        <div className="w-12 h-12 text-genexel-400">📋</div>
+      </div>
+      <h3 className="text-xl font-medium text-gray-900 mb-2">Coming Soon</h3>
+      <p className="text-gray-500 max-w-md">
+        {activeTab === "articles" 
+          ? "Our team is working on valuable articles. Check back soon for the latest insights."
+          : "Premium reports are being prepared. Please check back soon for in-depth analyses."
+        }
+      </p>
+    </div>
+  );
 
   return (
     <div ref={sectionRef} className="section-padding bg-gray-50">
@@ -148,18 +174,28 @@ const FeaturedContent = () => {
             isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
           )}
         >
-          {activeTab === "articles" ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {sampleArticles.map((article) => (
-                <ArticleCard key={article.id} article={article} />
-              ))}
-            </div>
+          {isLoading ? (
+            <LoadingState />
+          ) : activeTab === "articles" ? (
+            transformedArticles.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {transformedArticles.map((article) => (
+                  <ArticleCard key={article.id} article={article} />
+                ))}
+              </div>
+            ) : (
+              <EmptyState />
+            )
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {sampleReports.map((report) => (
-                <ReportCard key={report.id} report={report} />
-              ))}
-            </div>
+            transformedReports.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {transformedReports.map((report) => (
+                  <ReportCard key={report.id} report={report} />
+                ))}
+              </div>
+            ) : (
+              <EmptyState />
+            )
           )}
         </div>
 

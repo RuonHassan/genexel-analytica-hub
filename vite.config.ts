@@ -17,19 +17,32 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    }
+      "zod": path.resolve(__dirname, "node_modules/zod")
+    },
+    dedupe: ['zod']
   },
   optimizeDeps: {
-    include: ['zod']
+    include: ['zod'],
+    force: true,
+    esbuildOptions: {
+      platform: 'browser'
+    }
   },
   build: {
-    target: 'esnext',
-    modulePreload: true,
-    minify: true,
-    sourcemap: false,
+    target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
     commonjsOptions: {
       include: [/node_modules/],
       transformMixedEsModules: true
+    },
+    rollupOptions: {
+      treeshake: true,
+      output: {
+        manualChunks(id) {
+          if (id.includes('node_modules/zod')) {
+            return 'vendor';
+          }
+        }
+      }
     }
   }
 }));
