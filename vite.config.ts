@@ -17,21 +17,23 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-    },
+    }
   },
   optimizeDeps: {
-    include: ['zod']
+    include: ['zod'],
+    esbuildOptions: {
+      target: 'es2020'
+    }
   },
   build: {
+    target: 'es2020',
     commonjsOptions: {
-      include: [/node_modules/]
+      include: [/node_modules/],
+      transformMixedEsModules: true
     },
     rollupOptions: {
-      external: [],
       output: {
-        manualChunks: {
-          'zod': ['zod']
-        }
+        format: 'es'
       }
     }
   },
