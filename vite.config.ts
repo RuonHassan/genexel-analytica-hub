@@ -17,6 +17,8 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "zod": path.resolve(__dirname, "src/lib/zodExports.ts"),
+      "@hookform/resolvers/zod": path.resolve(__dirname, "src/lib/mockZodResolver.ts"),
       stream: 'stream-browserify',
       util: 'util',
       process: 'process/browser',
@@ -50,12 +52,10 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: [
-      '@hookform/resolvers/zod', 
       'buffer', 
       'process/browser',
       '@supabase/supabase-js'
     ],
-    exclude: ['zod'],
     esbuildOptions: {
       define: {
         global: 'globalThis'
