@@ -20,24 +20,12 @@ export default defineConfig(({ mode }) => ({
     },
   },
   optimizeDeps: {
-    include: ['zod'],
-    force: true,
-    esbuildOptions: {
-      platform: 'browser'
-    }
+    include: ['zod']
   },
   build: {
     target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
     commonjsOptions: {
-      include: [/node_modules/],
-      transformMixedEsModules: true
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['zod'],
-        }
-      }
+      include: [/node_modules/]
     }
   }
 }));
