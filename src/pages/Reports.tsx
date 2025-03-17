@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getReports } from "@/lib/supabase";
 import ReportsGrid from "@/components/ReportsGrid";
 import ArticlesPagination from "@/components/ArticlesPagination";
+import RecentArticles from "@/components/RecentArticles";
 
 // Error boundary for handling errors gracefully
 class ErrorBoundary extends React.Component<{ children: React.ReactNode }, { hasError: boolean }> {
@@ -73,22 +74,34 @@ const Reports = () => {
 
         {/* Main Content */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <ReportsGrid
-            reports={currentReports}
-            currentPage={currentPage}
-            isLoading={isLoading}
-            error={error}
-          />
-
-          {totalPages > 1 && (
-            <div className="mt-8">
-              <ArticlesPagination
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Reports Grid - Takes up most of the space */}
+            <div className="lg:w-3/4">
+              <ReportsGrid
+                reports={currentReports}
                 currentPage={currentPage}
-                totalPages={totalPages}
-                setCurrentPage={setCurrentPage}
+                isLoading={isLoading}
+                error={error}
               />
+
+              {totalPages > 1 && (
+                <div className="mt-8">
+                  <ArticlesPagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    setCurrentPage={setCurrentPage}
+                  />
+                </div>
+              )}
             </div>
-          )}
+            
+            {/* Right Sidebar - Recent Articles */}
+            <div className="lg:w-1/4 mt-8 lg:mt-0">
+              <div className="sticky top-24">
+                <RecentArticles />
+              </div>
+            </div>
+          </div>
         </div>
       </>
     </ErrorBoundary>
