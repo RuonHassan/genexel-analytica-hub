@@ -25,16 +25,6 @@ export default defineConfig(({ mode }) => ({
   build: {
     commonjsOptions: {
       include: [/zod/, /node_modules/]
-    },
-    rollupOptions: {
-      external: ['zod'],
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          zod: 'zod'
-        }
-      }
     }
   }
 }));
