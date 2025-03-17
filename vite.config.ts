@@ -17,9 +17,18 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "zod": path.resolve(__dirname, "node_modules/zod")
+      "zod": path.resolve(__dirname, "node_modules/zod"),
+      stream: 'stream-browserify',
+      util: 'util',
+      process: 'process/browser',
+      buffer: 'buffer',
+      global: path.resolve(__dirname, 'src/lib/global.js')
     },
-    mainFields: ['module', 'jsnext:main', 'jsnext', 'main']
+    mainFields: ['browser', 'module', 'jsnext:main', 'jsnext', 'main']
+  },
+  define: {
+    'process.env': {},
+    global: 'globalThis',
   },
   build: {
     target: 'es2020',
@@ -31,6 +40,6 @@ export default defineConfig(({ mode }) => ({
     }
   },
   optimizeDeps: {
-    include: ['zod', '@hookform/resolvers/zod']
+    include: ['zod', '@hookform/resolvers/zod', 'buffer', 'process/browser']
   }
 }));
