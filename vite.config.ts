@@ -18,18 +18,5 @@ export default defineConfig(({ mode }) => ({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     }
-  },
-  build: {
-    target: ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14'],
-    commonjsOptions: {
-      include: [/node_modules/],
-      transformMixedEsModules: true
-    }
-  },
-  optimizeDeps: {
-    include: ['zod'],
-    esbuildOptions: {
-      target: 'es2020'
-    }
   }
 }));
