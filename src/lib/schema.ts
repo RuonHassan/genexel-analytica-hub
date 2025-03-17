@@ -4,7 +4,7 @@
  * 
  * For Vercel deployment, zod is marked as external in rollupOptions.
  */
-import * as z from 'zod';
+import { z } from 'zod';
 
 // Re-export zod
 export default z;

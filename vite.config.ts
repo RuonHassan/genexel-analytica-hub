@@ -24,7 +24,18 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     commonjsOptions: {
-      include: [/zod/, /node_modules/]
+      include: [/node_modules/]
+    },
+    rollupOptions: {
+      external: [],
+      output: {
+        manualChunks: {
+          'zod': ['zod']
+        }
+      }
     }
+  },
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(mode)
   }
 }));
