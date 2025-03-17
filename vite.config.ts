@@ -49,17 +49,17 @@ export default defineConfig(({ mode }) => ({
     }
   },
   optimizeDeps: {
-    esbuildOptions: {
-      define: {
-        global: 'globalThis'
-      }
-    },
     include: [
-      'zod', 
       '@hookform/resolvers/zod', 
       'buffer', 
       'process/browser',
       '@supabase/supabase-js'
-    ]
+    ],
+    exclude: ['zod'],
+    esbuildOptions: {
+      define: {
+        global: 'globalThis'
+      }
+    }
   }
 }));

@@ -9,8 +9,23 @@
     <meta property="og:image" content="/og-image.png" />
     <!-- Polyfill global for Node.js compatibility -->
     <script>
+      // Ensure global is available
       window.global = window;
-      window.process = window.process || { env: {} };
+      
+      // Ensure process is available
+      window.process = window.process || {
+        env: {},
+        nextTick: function(fn) { setTimeout(fn, 0); },
+        browser: true
+      };
+      
+      // Buffer polyfill placeholder
+      window.Buffer = window.Buffer || {};
+      
+      // Prevent certain URL errors by providing a noop implementation
+      window.URL.createObjectURL = window.URL.createObjectURL || function() { 
+        return ""; 
+      };
     </script>
   </head>
 
