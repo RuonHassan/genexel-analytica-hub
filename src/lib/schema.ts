@@ -2,11 +2,12 @@
  * This file is used to ensure zod is properly bundled during builds.
  * It exports the zod library for use throughout the application.
  * 
- * For Vercel deployment, zod is marked as external in rollupOptions.
+ * Zod is treated as an external dependency and will be loaded from node_modules.
  */
-import zod from 'zod';
+import * as z from 'zod';
 
-export const z = zod;
+// Export both named and default exports to support different import styles
+export { z };
 export default z;
 
 // Example schema to ensure the module is properly imported
