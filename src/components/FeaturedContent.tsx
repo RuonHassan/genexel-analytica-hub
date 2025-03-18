@@ -131,7 +131,7 @@ const FeaturedContent = () => {
               Featured Publications
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover our latest research articles and premium reports providing valuable insights for higher education institutions.
+              Discover our latest research articles and premium reports providing valuable insights for organisations.
             </p>
           </div>
 

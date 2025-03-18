@@ -15,8 +15,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-gray-300 mb-6">
-              Data analysis specialists with expertise in higher education insights. 
-              We transform complex data into actionable intelligence.
+              Data analysis specialists with expertise in transforming complex data into actionable intelligence. We help organisations make better decisions through strategic insights.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

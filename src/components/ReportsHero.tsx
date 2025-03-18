@@ -37,7 +37,7 @@ const ReportsHero = ({
           Premium Research Reports
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6 transition-all duration-700 delay-100 opacity-0 translate-y-8 fade-in-item">
-          In-depth analysis and data-driven insights to inform decision-making at your institution.
+          In-depth analysis and data-driven insights to inform strategic decision-making at your organisation.
         </p>
         
         <div className="flex items-center justify-center gap-2 mb-10 transition-all duration-700 delay-150 opacity-0 translate-y-8 fade-in-item">
@@ -50,7 +50,7 @@ const ReportsHero = ({
                 </div>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>Our premium reports provide comprehensive data analysis and actionable insights for higher education institutions. Each report undergoes rigorous peer review and includes both data visualizations and strategic recommendations.</p>
+                <p>Our premium reports provide comprehensive data analysis and actionable insights for businesses and organisations of all types. Each report undergoes rigorous peer review and includes both data visualisations and strategic recommendations.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -71,10 +71,10 @@ const ValueProposition = () => {
               Why Choose Genexel
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-analytics-950 mb-6">
-              Specialised in Higher Education Data Analytics
+              Specialised in Advanced Data Analytics
             </h2>
             <p className="text-gray-600 mb-8 text-lg">
-              Genexel stands at the intersection of educational research and advanced data science. We understand the unique challenges facing higher education institutions and provide tailored analytical solutions.
+              Genexel stands at the intersection of cutting-edge research and advanced data science. We understand the unique challenges facing modern organisations and provide tailored analytical solutions.
             </p>
 
             <ul className="space-y-4">

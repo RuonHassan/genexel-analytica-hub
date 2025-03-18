@@ -15,9 +15,6 @@ const About = () => {
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-analytics-950 mb-6">
                 About Genexel Analytics
               </h1>
-              <p className="text-xl text-gray-600">
-                Data analytics solutions for higher education institutions.
-              </p>
             </div>
           </div>
         </section>
@@ -31,16 +28,14 @@ const About = () => {
                 <div className="glass-card p-6 rounded-xl">
                   <h3 className="text-xl font-semibold mb-3 text-genexel-700">Mission</h3>
                   <p className="text-gray-600">
-                    To empower educational institutions with data-driven insights that enhance decision-making, 
-                    improve student outcomes, and optimise resource allocation.
+                    To empower organisations with data-driven insights that enhance decision-making, improve outcomes, and optimise resource allocation.
                   </p>
                 </div>
                 
                 <div className="glass-card p-6 rounded-xl">
                   <h3 className="text-xl font-semibold mb-3 text-genexel-700">Vision</h3>
                   <p className="text-gray-600">
-                    To be the leading provider of analytical solutions in the education sector, 
-                    creating a world where every educational decision is informed by comprehensive data analysis.
+                    To be the leading provider of analytical solutions, creating a world where every decision is informed by comprehensive data analysis.
                   </p>
                 </div>
               </div>
@@ -53,45 +48,6 @@ const About = () => {
                 className="rounded-xl relative z-10 shadow-lg w-full"
               />
               <div className="absolute -bottom-6 -right-6 w-24 h-24 bg-analytics-100 rounded-full opacity-70"></div>
-            </div>
-          </div>
-        </section>
-
-        {/* Our Team */}
-        <section className="py-16 bg-gray-50">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-analytics-100 text-analytics-800 text-sm font-medium mb-6">
-                Meet The Experts
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-analytics-950 mb-4">
-                Our Leadership Team
-              </h2>
-              <p className="text-gray-600 max-w-2xl mx-auto">
-                Our leadership combines expertise in data science, educational research, and technology 
-                to deliver transformative analytics solutions.
-              </p>
-            </div>
-            
-            <div className="flex justify-center">
-              <div className="glass-card p-6 rounded-xl text-center max-w-md">
-                <div className="w-32 h-32 mx-auto mb-4 relative">
-                  <div className="absolute inset-0 rounded-full bg-genexel-200 transform -rotate-6"></div>
-                  <img 
-                    src="/assets/images/ceo-image.jpg" 
-                    alt="Nour Hassan" 
-                    className="w-full h-full object-cover rounded-full relative z-10 border-2 border-white"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      console.error("Image failed to load:", target.src);
-                      target.src = "https://via.placeholder.com/128?text=CEO"; // Fallback image
-                    }}
-                  />
-                </div>
-                <h3 className="text-2xl font-semibold text-analytics-900 mb-1">Nour Hassan</h3>
-                <p className="text-genexel-600 font-medium text-lg mb-3">Founder & CEO</p>
-                <p className="text-gray-600">BSc Genetics: Queen Mary University of London, MSs Genomic Medicine: Imperial College London, Business Analytics and AI: Decision-Making Using Data: University of Cambridge.</p>
-              </div>
             </div>
           </div>
         </section>

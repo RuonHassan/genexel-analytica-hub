@@ -36,7 +36,7 @@ const ArticlesHero = ({
           Latest Articles & Insights
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-10 transition-all duration-700 delay-100 opacity-0 translate-y-8 fade-in-item">
-          Discover cutting-edge research and analysis from our experts in higher education data analytics.
+          Discover cutting-edge research and analysis from our expert data analysts and researchers.
         </p>
         
         {/* Search and filter */}
