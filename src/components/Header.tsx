@@ -76,13 +76,6 @@ const Header = () => {
               {link.name}
             </Link>
           ))}
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="ml-4 bg-genexel-600 hover:bg-genexel-700 text-white"
-          >
-            Client Login
-          </Button>
         </nav>
 
         {/* Mobile menu button */}
@@ -117,12 +110,6 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
-            <Button 
-              variant="default" 
-              className="mt-2 bg-genexel-600 hover:bg-genexel-700 text-white w-full"
-            >
-              Client Login
-            </Button>
           </nav>
         </div>
       )}

@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
@@ -57,14 +56,6 @@ export function Navbar() {
           >
             Contact
           </Link>
-          <Button 
-            variant="default" 
-            size="sm" 
-            className="ml-4 bg-genexel-600 hover:bg-genexel-700 text-white"
-            onClick={() => console.log("Client login clicked")}
-          >
-            Client Login
-          </Button>
         </div>
       </div>
     </nav>
