@@ -1,26 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight, BookOpen, FileText, Search } from "lucide-react";
+import { ArrowRight, Beaker, FileText, BookOpen } from "lucide-react";
 
-export default function ResearchPublications() {
+export default function ResistanceMechanismResearch() {
   return (
     <div className="container mx-auto px-4 py-16">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold mb-6">Research Publications</h1>
+        <h1 className="text-4xl font-bold mb-6">Resistance Mechanism Research Support</h1>
         
         <div className="prose prose-lg max-w-none">
           <p className="text-xl text-muted-foreground mb-8">
-            Expert guidance in preparing and publishing high-quality research papers and academic publications.
+            Collaborating on research to discover, validate, and publish findings on drug resistance pathways.
           </p>
 
           <div className="grid gap-8 my-12">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-lg bg-primary/10">
-                <Search className="w-6 h-6 text-primary" />
+                <Beaker className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Literature Review</h3>
+                <h3 className="text-xl font-semibold mb-2">Genomic Experiment Design</h3>
                 <p className="text-muted-foreground">
-                  Comprehensive analysis of existing research and publications within your field of study.
+                  Assistance in designing robust genomics experiments tailored for investigating drug resistance mechanisms.
                 </p>
               </div>
             </div>
@@ -30,9 +30,9 @@ export default function ResearchPublications() {
                 <FileText className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Manuscript Preparation</h3>
+                <h3 className="text-xl font-semibold mb-2">Bioinformatic Analysis & Interpretation</h3>
                 <p className="text-muted-foreground">
-                  Professional support in writing, formatting, and structuring your research papers.
+                  Expert bioinformatic support for analyzing complex genomic data and interpreting resistance-related findings.
                 </p>
               </div>
             </div>
@@ -42,21 +42,21 @@ export default function ResearchPublications() {
                 <BookOpen className="w-6 h-6 text-primary" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">Publication Support</h3>
+                <h3 className="text-xl font-semibold mb-2">Manuscript & Grant Support</h3>
                 <p className="text-muted-foreground">
-                  Expert guidance on journal selection, submission processes, and peer review responses.
+                  Contributions to manuscript preparation and grant applications, focusing on the genomic aspects of your research.
                 </p>
               </div>
             </div>
           </div>
 
           <div className="bg-muted p-6 rounded-lg mt-8">
-            <h3 className="text-xl font-semibold mb-4">Ready to publish your research?</h3>
+            <h3 className="text-xl font-semibold mb-4">Advance Your Resistance Research</h3>
             <p className="mb-6">
-              Let our team of experienced researchers help you share your findings with the academic community.
+              Partner with our genomics experts to accelerate your research on drug resistance mechanisms.
             </p>
             <Button className="gap-2">
-              Enquire Now <ArrowRight className="w-4 h-4" />
+              Start Collaboration <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </div>

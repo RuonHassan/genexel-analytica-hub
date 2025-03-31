@@ -55,22 +55,32 @@ const Footer = () => {
           </div>
 
           <div>
-            <h3 className="font-semibold text-xl mb-6">Our Services</h3>
-            <ul className="space-y-3">
+            <h3 className="text-lg font-semibold mb-4">Our Expertise</h3>
+            <ul className="space-y-2">
               <li>
-                <Link to="/services/data-analysis" className="text-gray-300 hover:text-white transition-colors">Data Analysis</Link>
+                <Link to="/services/genomic-data-analysis" className="text-gray-300 hover:text-white transition-colors">
+                  Genomic Data Analysis
+                </Link>
               </li>
               <li>
-                <Link to="/services/research-publications" className="text-gray-300 hover:text-white transition-colors">Research Publications</Link>
+                <Link to="/services/resistance-mechanism-research" className="text-gray-300 hover:text-white transition-colors">
+                  Resistance Mechanism Research
+                </Link>
               </li>
               <li>
-                <Link to="/services/custom-reports" className="text-gray-300 hover:text-white transition-colors">Bespoke Reports</Link>
+                <Link to="/services/custom-diagnostic-reports" className="text-gray-300 hover:text-white transition-colors">
+                  Custom Diagnostic Reports
+                </Link>
               </li>
               <li>
-                <Link to="/services/consultancy" className="text-gray-300 hover:text-white transition-colors">Consultancy</Link>
+                <Link to="/services/clinical-genomics-consultancy" className="text-gray-300 hover:text-white transition-colors">
+                  Clinical Genomics Consultancy
+                </Link>
               </li>
               <li>
-                <Link to="/services/workshops" className="text-gray-300 hover:text-white transition-colors">Workshops</Link>
+                <Link to="/services/genomics-implementation-support" className="text-gray-300 hover:text-white transition-colors">
+                  Genomics Implementation Support
+                </Link>
               </li>
             </ul>
           </div>

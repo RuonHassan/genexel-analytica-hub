@@ -21,11 +21,11 @@ import ArticleDetail from "@/pages/ArticleDetail";
 import { LoginPage } from '@/pages/LoginPage';
 
 // Import service pages
-import DataAnalysis from "./pages/services/DataAnalysis";
-import ResearchPublications from "./pages/services/ResearchPublications";
-import CustomReports from "./pages/services/CustomReports";
-import Consultancy from "./pages/services/Consultancy";
-import Workshops from "./pages/services/Workshops";
+import GenomicDataAnalysis from "./pages/services/GenomicDataAnalysis";
+import ResistanceMechanismResearch from "./pages/services/ResistanceMechanismResearch";
+import CustomDiagnosticReports from "./pages/services/CustomDiagnosticReports";
+import ClinicalGenomicsConsultancy from "./pages/services/ClinicalGenomicsConsultancy";
+import GenomicsImplementationSupport from "./pages/services/GenomicsImplementationSupport";
 
 // Create a Query Client with better error handling
 const queryClient = new QueryClient({
@@ -64,11 +64,11 @@ function App() {
                   <Route path="/admin/login" element={<LoginPage />} />
                   
                   {/* Service routes */}
-                  <Route path="/services/data-analysis" element={<DataAnalysis />} />
-                  <Route path="/services/research-publications" element={<ResearchPublications />} />
-                  <Route path="/services/custom-reports" element={<CustomReports />} />
-                  <Route path="/services/consultancy" element={<Consultancy />} />
-                  <Route path="/services/workshops" element={<Workshops />} />
+                  <Route path="/services/genomic-data-analysis" element={<GenomicDataAnalysis />} />
+                  <Route path="/services/resistance-mechanism-research" element={<ResistanceMechanismResearch />} />
+                  <Route path="/services/custom-diagnostic-reports" element={<CustomDiagnosticReports />} />
+                  <Route path="/services/clinical-genomics-consultancy" element={<ClinicalGenomicsConsultancy />} />
+                  <Route path="/services/genomics-implementation-support" element={<GenomicsImplementationSupport />} />
                   
                   {/* Protected admin routes */}
                   <Route
