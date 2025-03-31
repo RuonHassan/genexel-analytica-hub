@@ -16,10 +16,10 @@ const Index = () => {
         <section className="py-20 bg-gradient-to-r from-genexel-800 to-analytics-800 text-white">
           <div className="container mx-auto px-4 md:px-6 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Transform Your Data into Actionable Insights?
+              Ready to Revolutionize Drug Resistance Diagnostics?
             </h2>
             <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
-              Partner with Genexel and unlock the full potential of your institution's data.
+              Partner with Genexel and unlock the full potential of genomic diagnostics for precision medicine.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a 
@@ -32,7 +32,7 @@ const Index = () => {
                 href="/reports" 
                 className="px-8 py-3 bg-transparent border border-white text-white font-medium rounded-md hover:bg-white/10 transition-colors"
               >
-                Explore Reports
+                Explore Research
               </a>
             </div>
           </div>

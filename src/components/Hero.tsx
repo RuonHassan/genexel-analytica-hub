@@ -53,7 +53,7 @@ const Hero = () => {
           >
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-genexel-100 text-genexel-800 text-sm font-medium mb-6">
               <span className="inline-block w-2 h-2 rounded-full bg-genexel-500 mr-2"></span>
-              Transforming Data Into Strategic Advantage
+              Decoding Drug Resistance for Precision Medicine
             </div>
           </div>
 
@@ -62,8 +62,8 @@ const Hero = () => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
             }`}
           >
-            Turn Your Data Into 
-            <span className="text-genexel-600 block mt-2">Strategic Insights</span>
+            Revolutionizing
+            <span className="text-genexel-600 block mt-2">Treatment Strategies</span>
           </h1>
 
           <p 
@@ -71,7 +71,7 @@ const Hero = () => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
             }`}
           >
-            Genexel delivers comprehensive data analysis and research publications tailored to help organisations make strategic decisions.
+            Genexel is working to deliver cutting-edge genomic analysis and diagnostic tools to identify intrinsic drug resistance, revolutionizing treatment strategies and patient outcomes.
           </p>
 
           <div 

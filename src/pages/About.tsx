@@ -13,7 +13,7 @@ const About = () => {
                 Our Story
               </div>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-analytics-950 mb-6">
-                About Genexel Analytics
+                About Genexel Genomics
               </h1>
             </div>
           </div>
@@ -28,14 +28,14 @@ const About = () => {
                 <div className="glass-card p-6 rounded-xl">
                   <h3 className="text-xl font-semibold mb-3 text-genexel-700">Mission</h3>
                   <p className="text-gray-600">
-                    To empower organisations with data-driven insights that enhance decision-making, improve outcomes, and optimise resource allocation.
+                    To revolutionize precision medicine through advanced genomic diagnostics that identify hidden drug resistance mechanisms, enabling more effective treatment strategies and improved patient outcomes.
                   </p>
                 </div>
                 
                 <div className="glass-card p-6 rounded-xl">
                   <h3 className="text-xl font-semibold mb-3 text-genexel-700">Vision</h3>
                   <p className="text-gray-600">
-                    To be the leading provider of analytical solutions, creating a world where every decision is informed by comprehensive data analysis.
+                    To be the leading provider of comprehensive resistance diagnostics, creating a world where every treatment decision is informed by complete genomic understanding of both traditional and non-mechanism resistance pathways.
                   </p>
                 </div>
               </div>
@@ -67,23 +67,29 @@ const About = () => {
               </p>
             </div>
             
+            <div className="glass-card p-6 rounded-xl">
+              <p className="text-gray-600">
+                Founded by a team of genomics researchers and bioinformaticians, Genexel emerged from a simple observation: traditional drug resistance testing was missing critical resistance mechanisms that lie outside of the drug-disease interaction. Our journey began with investigating why patients with seemingly 'sensitive' disease profiles were failing standard treatments. This led to breakthrough discoveries of non-mechanism resistance pathways and we're working develop our proprietary diagnostic platform.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
               {[
                 {
-                  title: "Data Integrity",
-                  description: "We maintain the highest standards of data accuracy, reliability, and security"
+                  title: "Scientific Rigor",
+                  description: "We maintain the highest standards of genomic analysis accuracy, methodological precision, and data integrity"
                 },
                 {
-                  title: "Educational Impact",
-                  description: "We focus on solutions that meaningfully improve educational outcomes"
+                  title: "Clinical Relevance",
+                  description: "We focus on diagnostic solutions that meaningfully improve treatment decisions and patient outcomes"
                 },
                 {
-                  title: "Client Partnership",
-                  description: "We build collaborative relationships that prioritise client success"
+                  title: "Collaborative Innovation",
+                  description: "We build partnerships with healthcare providers and researchers that accelerate the translation of genomic insights into clinical practice"
                 },
                 {
-                  title: "Continuous Innovation",
-                  description: "We constantly evolve our methods to stay at the forefront of analytics technology"
+                  title: "Technological Advancement",
+                  description: "We constantly evolve our diagnostic platform to identify new resistance mechanisms and stay at the forefront of genomic medicine"
                 }
               ].map((value, index) => (
                 <div key={index} className="glass-card p-6 rounded-xl border-t-4 border-genexel-500">

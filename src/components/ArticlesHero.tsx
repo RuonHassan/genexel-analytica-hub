@@ -33,10 +33,10 @@ const ArticlesHero = ({
     <div className="bg-analytics-50 py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-analytics-900 mb-6 transition-all duration-700 opacity-0 translate-y-8 fade-in-item">
-          Latest Articles & Insights
+          Latest Research in Precision Medicine
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-10 transition-all duration-700 delay-100 opacity-0 translate-y-8 fade-in-item">
-          Discover cutting-edge research and analysis from our expert data analysts and researchers.
+          Stay informed with the latest genomic insights and breakthrough discoveries in drug resistance mechanisms
         </p>
         
         {/* Search and filter */}

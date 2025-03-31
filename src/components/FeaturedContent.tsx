@@ -125,13 +125,13 @@ const FeaturedContent = () => {
             )}
           >
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-genexel-100 text-genexel-800 text-sm font-medium mb-6">
-              Latest Insights
+              Latest Genomic Insights
             </div>
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight text-analytics-950 mb-4">
               Featured Publications
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover our latest research articles and premium reports providing valuable insights for organisations.
+              Discover the latest research and reports providing valuable insights into non-mechanism drug resistance pathways.
             </p>
           </div>
 

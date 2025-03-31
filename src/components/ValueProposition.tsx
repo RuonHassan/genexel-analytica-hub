@@ -33,22 +33,22 @@ const ValueProposition = () => {
   const features = [
     {
       title: "Research Excellence",
-      description: "Our team of researchers and analysts produce high-quality, peer-reviewed publications that set industry standards.",
+      description: "Our team of researchers and bioinformaticians produce high-quality, peer-reviewed publications that advance understanding of non-traditional drug resistance mechanisms.",
       icon: BookOpen,
     },
     {
       title: "Data Driven Insights",
-      description: "Transform complex educational data into clear, actionable insights that drive institutional improvement.",
+      description: "Transform complex genomic data into clear, actionable clinical insights that identify hidden resistance patterns conventional methods miss.",
       icon: BarChart2,
     },
     {
       title: "Strategic Implementation",
-      description: "Beyond analysis, we provide strategic recommendations tailored to your institution's specific context and goals.",
+      description: "Beyond analysis, we provide strategic implementation pathways for our diagnostic tools, tailored to your clinical setting's specific needs and patient populations.",
       icon: TrendingUp,
     },
     {
       title: "Proven Track Record",
-      description: "Trusted by leading higher education institutions across the country for reliable and impactful research.",
+      description: "Trusted by leading medical research institutions and healthcare providers for reliable identification of resistance mechanisms that traditional assays fail to detect.",
       icon: Award,
     },
   ];
@@ -74,16 +74,16 @@ const ValueProposition = () => {
               Specialised in Advanced Data Analytics
             </h2>
             <p className="text-gray-600 mb-8 text-lg">
-              Genexel stands at the intersection of cutting-edge research and advanced data science. We understand the unique challenges facing modern organisations and provide tailored analytical solutions.
+              Genexel stands at the intersection of cutting-edge genomic research and advanced bioinformatics. We understand the unique challenges of drug resistance in precision medicine and provide tailored diagnostic solutions that look beyond traditional resistance mechanisms.
             </p>
 
             <ul className="space-y-4">
               {[
-                "Comprehensive research methodologies",
-                "Institution-specific data analysis",
-                "Actionable recommendations",
-                "Ongoing analytical support",
-                "Custom report generation",
+                "Comprehensive genomic sequencing and analysis",
+                "Mutation-specific resistance profiling",
+                "Actionable clinical recommendations",
+                "Ongoing diagnostic support",
+                "Custom resistance pathway mapping",
               ].map((item, index) => (
                 <li key={index} className="flex items-start">
                   <div className="mr-3 mt-1 flex-shrink-0">

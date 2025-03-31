@@ -34,10 +34,10 @@ const ReportsHero = ({
     <div className="bg-genexel-50 py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6 max-w-4xl text-center">
         <h1 className="text-4xl md:text-5xl font-bold text-analytics-900 mb-6 transition-all duration-700 opacity-0 translate-y-8 fade-in-item">
-          Premium Research Reports
+          Genomic Analysis Reports
         </h1>
         <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-6 transition-all duration-700 delay-100 opacity-0 translate-y-8 fade-in-item">
-          In-depth analysis and data-driven insights to inform strategic decision-making at your organisation.
+          Access comprehensive genomic analysis reports covering resistance mechanisms and precision medicine applications.
         </p>
         
         <div className="flex items-center justify-center gap-2 mb-10 transition-all duration-700 delay-150 opacity-0 translate-y-8 fade-in-item">
@@ -50,7 +50,7 @@ const ReportsHero = ({
                 </div>
               </TooltipTrigger>
               <TooltipContent className="max-w-xs">
-                <p>Our premium reports provide comprehensive data analysis and actionable insights for businesses and organisations of all types. Each report undergoes rigorous peer review and includes both data visualisations and strategic recommendations.</p>
+                <p>Our comprehensive genomic analysis reports are currently being updated with the latest research findings. Please check back soon or contact us for advance access to our newest insights on non-mechanism drug resistance.</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

@@ -55,11 +55,10 @@ const Contact = () => {
                 Get In Touch
               </div>
               <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-analytics-950 mb-6">
-                Contact Us
+                Contact Our Team
               </h1>
-              <p className="text-xl text-gray-600">
-                Have questions about our services or want to discuss your institution's specific needs? 
-                Our team is ready to help.
+              <p className="text-xl text-gray-600 mb-12">
+                Have questions about our diagnostic platform or want to discuss implementing precision resistance testing in your clinical setting? Our team of genomics experts is ready to help.
               </p>
             </div>
           </div>
