@@ -15,7 +15,7 @@ const Footer = () => {
               </div>
             </Link>
             <p className="text-gray-300 mb-6">
-              Data analysis specialists with expertise in transforming complex data into actionable intelligence. We help organisations make better decisions through strategic insights.
+              Pioneering genomic diagnostics specialists with expertise in identifying drug resistance mechanisms. We help healthcare providers make better treatment decisions through advanced resistance testing.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">

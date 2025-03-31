@@ -112,8 +112,8 @@ const Hero = () => {
             <div className="w-12 h-12 rounded-lg bg-genexel-100 flex items-center justify-center mb-4">
               <BarChart2 className="h-6 w-6 text-genexel-600" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">Data Analysis</h3>
-            <p className="text-gray-600">Comprehensive analysis of educational metrics and performance indicators.</p>
+            <h3 className="text-xl font-semibold mb-2">Genomic Analysis</h3>
+            <p className="text-gray-600">Comprehensive genomic sequencing and analysis of resistance mechanisms.</p>
           </div>
           
           <div className="glass-card p-6 rounded-xl">
@@ -121,15 +121,15 @@ const Hero = () => {
               <FileText className="h-6 w-6 text-genexel-600" />
             </div>
             <h3 className="text-xl font-semibold mb-2">Research Reports</h3>
-            <p className="text-gray-600">In-depth publications with actionable insights for educational institutions.</p>
+            <p className="text-gray-600">In-depth publications on non-mechanism drug resistance pathways.</p>
           </div>
           
           <div className="glass-card p-6 rounded-xl">
             <div className="w-12 h-12 rounded-lg bg-genexel-100 flex items-center justify-center mb-4">
               <BarChart className="h-6 w-6 text-genexel-600" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">Custom Analytics</h3>
-            <p className="text-gray-600">Tailored analytical solutions designed for your institution's specific needs.</p>
+            <h3 className="text-xl font-semibold mb-2">Custom Diagnostics</h3>
+            <p className="text-gray-600">Tailored diagnostic solutions for your clinical setting's specific needs.</p>
           </div>
         </div>
       </div>

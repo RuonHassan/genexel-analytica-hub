@@ -2,85 +2,85 @@ import { supabase, Article, Report } from './supabase';
 
 export const sampleArticles: Omit<Article, 'id' | 'created_at' | 'updated_at'>[] = [
   {
-    title: 'The Impact of AI on Higher Education',
+    title: 'Novel Drug Resistance Pathways in Cancer Treatment',
     content: `
-      <p>Artificial intelligence is revolutionizing how universities operate and deliver education. From automating administrative tasks to personalizing learning experiences, AI technologies are making significant impacts across campuses worldwide.</p>
+      <p>Recent discoveries in genomic analysis have revealed previously unknown mechanisms of drug resistance in cancer treatment.</p>
       
-      <h2>Transforming Administrative Processes</h2>
-      <p>Universities are using AI to streamline admissions, financial aid, and other administrative functions, allowing staff to focus on more complex tasks that require human judgment.</p>
+      <h2>Non-Traditional Resistance Mechanisms</h2>
+      <p>Our research has identified several non-mechanism pathways that contribute to treatment resistance, challenging conventional understanding.</p>
       
-      <h2>Enhancing Learning Experiences</h2>
-      <p>AI-powered adaptive learning platforms can personalize education by identifying knowledge gaps and recommending tailored content based on individual student performance.</p>
+      <h2>Genomic Markers</h2>
+      <p>Advanced sequencing techniques have revealed new genomic markers associated with drug resistance patterns.</p>
       
-      <h2>Supporting Student Success</h2>
-      <p>Predictive analytics can identify students at risk of falling behind or dropping out, enabling timely interventions and support services.</p>
+      <h2>Clinical Implications</h2>
+      <p>Understanding these resistance pathways has significant implications for treatment selection and patient outcomes.</p>
       
-      <h2>Ethical Considerations</h2>
-      <p>As institutions adopt AI technologies, they must navigate ethical considerations around data privacy, algorithmic bias, and the appropriate balance between automation and human interaction.</p>
+      <h2>Future Directions</h2>
+      <p>Ongoing research continues to uncover new resistance mechanisms and potential therapeutic targets.</p>
     `,
-    summary: 'Exploring how artificial intelligence is transforming educational approaches in universities.',
-    category: 'Technology',
-    slug: 'impact-ai-higher-education',
+    summary: 'Exploring newly discovered drug resistance pathways and their implications for cancer treatment.',
+    category: 'Research',
+    slug: 'novel-drug-resistance-pathways',
     image_url: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=2000&ixlib=rb-4.0.3'
   },
   {
-    title: 'Data-Driven Decision Making in University Administration',
+    title: 'Precision Medicine Through Genomic Analysis',
     content: `
-      <p>Universities are increasingly leveraging data analytics to inform strategic decisions and improve operational efficiency.</p>
+      <p>Genomic analysis is revolutionizing how we approach precision medicine and drug resistance testing.</p>
       
-      <h2>Enrollment Management</h2>
-      <p>Data analytics helps institutions predict enrollment trends, optimize recruitment strategies, and allocate resources effectively.</p>
+      <h2>Advanced Diagnostics</h2>
+      <p>New diagnostic tools enable more precise identification of resistance mechanisms and treatment selection.</p>
       
-      <h2>Financial Planning</h2>
-      <p>Advanced forecasting models enable universities to anticipate financial challenges and opportunities, leading to more strategic budget allocations.</p>
+      <h2>Clinical Applications</h2>
+      <p>Implementation of genomic diagnostics in clinical settings is improving patient outcomes.</p>
       
-      <h2>Facilities Optimization</h2>
-      <p>Space utilization data helps administrators identify underutilized areas and make informed decisions about campus infrastructure development.</p>
+      <h2>Future Developments</h2>
+      <p>Emerging technologies promise even more accurate and comprehensive resistance testing capabilities.</p>
       
       <h2>Implementation Challenges</h2>
-      <p>Despite the benefits, universities face challenges in data integration, building analytics capabilities, and fostering a data-driven culture among staff.</p>
+      <p>Healthcare providers face various challenges in adopting and implementing genomic diagnostic tools.</p>
     `,
-    summary: 'How universities are using analytics to improve administrative decisions and strategic planning.',
-    category: 'Analytics',
-    slug: 'data-driven-decision-making-university-administration',
+    summary: 'How genomic analysis is transforming precision medicine and drug resistance testing.',
+    category: 'Clinical',
+    slug: 'precision-medicine-genomic-analysis',
     image_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&q=80&w=2000&ixlib=rb-4.0.3'
   },
   {
-    title: 'Trends in Student Engagement Metrics',
+    title: 'Emerging Trends in Resistance Testing',
     content: `
-      <p>Understanding and measuring student engagement is critical for improving retention and educational outcomes.</p>
+      <p>New approaches to resistance testing are changing how we understand and combat drug resistance.</p>
       
-      <h2>Beyond Traditional Metrics</h2>
-      <p>Universities are moving beyond simple attendance tracking to measure meaningful engagement through learning management system interactions, participation quality, and other behavioral indicators.</p>
+      <h2>Advanced Methods</h2>
+      <p>Novel testing methods provide deeper insights into resistance mechanisms and pathways.</p>
       
-      <h2>Digital Engagement Tools</h2>
-      <p>Mobile apps, interactive content, and gamification are being deployed to increase student participation and provide more data points for analysis.</p>
+      <h2>Digital Tools</h2>
+      <p>Bioinformatics and AI are enhancing our ability to interpret complex resistance patterns.</p>
       
-      <h2>Correlating Engagement with Outcomes</h2>
-      <p>Research shows strong correlations between specific engagement patterns and academic success, helping institutions identify effective intervention strategies.</p>
+      <h2>Clinical Impact</h2>
+      <p>These advances are leading to more effective treatment strategies and better patient outcomes.</p>
       
       <h2>Privacy Considerations</h2>
-      <p>As more engagement data is collected, universities must balance the benefits of insight with student privacy and ethical data use.</p>
+      <p>As we collect more genomic data, maintaining patient privacy and data security remains crucial.</p>
     `,
-    summary: 'Exploring how institutions measure and improve student engagement using advanced analytics.',
-    category: 'Student Success',
-    slug: 'trends-student-engagement-metrics',
+    summary: 'Exploring new approaches and technologies in drug resistance testing.',
+    category: 'Technology',
+    slug: 'trends-resistance-testing',
     image_url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80&w=2000&ixlib=rb-4.0.3'
   }
 ];
 
 export const sampleReports: Omit<Report, 'id' | 'created_at'>[] = [
   {
-    title: 'Higher Education Analytics Benchmark 2023',
-    description: 'A comprehensive analysis of analytics adoption and impact across UK universities.',
-    category: 'Benchmarking',
+    title: 'Drug Resistance Mechanisms Benchmark 2023',
+    description: 'A comprehensive analysis of newly identified resistance pathways and their clinical implications.',
+    category: 'Research',
     file_url: 'https://pdf-examples.com/sample-report.pdf',
     thumbnail_url: 'https://images.unsplash.com/photo-1561089489-f13d5e730d72?auto=format&fit=crop&q=80&w=800'
   },
   {
-    title: 'Student Success Prediction Models: Comparative Analysis',
-    description: 'Evaluating the effectiveness of different predictive models for identifying at-risk students.',
-    category: 'Research',
+    title: 'Clinical Implementation of Genomic Diagnostics',
+    description: 'Best practices for implementing genomic diagnostic tools in clinical settings.',
+    category: 'Clinical',
     file_url: 'https://pdf-examples.com/sample-report2.pdf',
     thumbnail_url: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&q=80&w=800'
   }

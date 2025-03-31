@@ -132,7 +132,7 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Organisation</FormLabel>
                               <FormControl>
-                                <Input placeholder="University Name" {...field} />
+                                <Input placeholder="Organization Name" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
