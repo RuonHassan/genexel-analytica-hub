@@ -62,8 +62,8 @@ const Hero = () => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
             }`}
           >
-            Decoding Drug
-            <span className="text-genexel-600 block mt-2">Resistance</span>
+            Decoding Drug Resistance
+            <span className="text-genexel-600 block mt-2">for Precision Medicine</span>
           </h1>
 
           <p 
