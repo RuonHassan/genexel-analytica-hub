@@ -1,6 +1,7 @@
 import { Check, BookOpen, BarChart2, TrendingUp, Award } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 
 const ValueProposition = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -76,20 +77,17 @@ const ValueProposition = () => {
             <p className="text-gray-600 mb-8 text-lg">
               Genexel stands at the intersection of cutting-edge genomic research and advanced bioinformatics. We understand the unique challenges of drug resistance in precision medicine and provide tailored diagnostic solutions that look beyond traditional resistance mechanisms.
             </p>
-
-            <ul className="space-y-4">
+            <ul className="space-y-3 mb-8">
               {[
                 "Comprehensive genomic sequencing and analysis",
                 "Mutation-specific resistance profiling",
                 "Actionable clinical recommendations",
                 "Ongoing diagnostic support",
-                "Custom resistance pathway mapping",
-              ].map((item, index) => (
-                <li key={index} className="flex items-start">
-                  <div className="mr-3 mt-1 flex-shrink-0">
-                    <Check className="h-5 w-5 text-genexel-600" />
-                  </div>
-                  <span className="text-gray-700">{item}</span>
+                "Custom resistance pathway mapping"
+              ].map((feature, index) => (
+                <li key={index} className="flex items-center text-gray-700">
+                  <Check className="h-5 w-5 text-genexel-600 mr-3 flex-shrink-0" />
+                  <span>{feature}</span>
                 </li>
               ))}
             </ul>

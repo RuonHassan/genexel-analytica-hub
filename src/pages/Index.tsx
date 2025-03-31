@@ -32,7 +32,7 @@ const Index = () => {
                 href="/reports" 
                 className="px-8 py-3 bg-transparent border border-white text-white font-medium rounded-md hover:bg-white/10 transition-colors"
               >
-                Explore Research
+                View Reports
               </a>
             </div>
           </div>
