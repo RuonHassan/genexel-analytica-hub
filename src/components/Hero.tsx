@@ -53,7 +53,7 @@ const Hero = () => {
           >
             <div className="inline-flex items-center px-3 py-1 rounded-full bg-genexel-100 text-genexel-800 text-sm font-medium mb-6">
               <span className="inline-block w-2 h-2 rounded-full bg-genexel-500 mr-2"></span>
-              Decoding Drug Resistance for Precision Medicine
+              Revolutionizing Treatment Strategies
             </div>
           </div>
 
@@ -62,8 +62,8 @@ const Hero = () => {
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
             }`}
           >
-            Revolutionizing
-            <span className="text-genexel-600 block mt-2">Treatment Strategies</span>
+            Decoding Drug
+            <span className="text-genexel-600 block mt-2">Resistance</span>
           </h1>
 
           <p 
