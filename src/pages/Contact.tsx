@@ -79,8 +79,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="text-lg font-semibold text-analytics-900 mb-1">Email</h3>
-                      <a href="mailto:info@genexel.com" className="text-genexel-600 hover:underline">
-                        info@genexel.com
+                      <a href="mailto:contact@genexel.com" className="text-genexel-600 hover:underline">
+                        contact@genexel.com
                       </a>
                     </div>
                   </div>
@@ -132,7 +132,7 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Organisation</FormLabel>
                               <FormControl>
-                                <Input placeholder="Organization Name" {...field} />
+                                <Input placeholder="Institution" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -146,7 +146,7 @@ const Contact = () => {
                             <FormItem>
                               <FormLabel>Subject</FormLabel>
                               <FormControl>
-                                <Input placeholder="How can we help?" {...field} />
+                                <Input placeholder="Inquiries" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>

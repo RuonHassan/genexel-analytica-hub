@@ -84,7 +84,7 @@ const Footer = () => {
               <p>W1W 5PF</p>
             </address>
             <p className="text-gray-300 mb-2">
-              <span className="font-medium">Email:</span> enquiries@genexel.com
+              <span className="font-medium">Email:</span> contact@genexel.com
             </p>
             <p className="text-gray-300">
               <span className="font-medium">Tel:</span> +44 (0) 1234 567890

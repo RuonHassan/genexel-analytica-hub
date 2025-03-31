@@ -85,7 +85,7 @@ const Hero = () => {
               asChild
             >
               <Link to="/reports">
-                Explore Reports
+                Explore Research
                 <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -96,7 +96,7 @@ const Hero = () => {
               asChild
             >
               <Link to="/about">
-                Learn More
+                View Reports
               </Link>
             </Button>
           </div>
