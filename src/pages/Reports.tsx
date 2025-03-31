@@ -64,10 +64,10 @@ const Reports = () => {
         <div className="bg-white border-b">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Market Research Reports
+              Genomic Analysis Reports
             </h1>
             <p className="text-xl text-gray-600 max-w-3xl">
-              Access comprehensive market research reports covering various industries and sectors.
+              Access comprehensive genomic analysis reports covering resistance mechanisms and precision medicine applications.
             </p>
           </div>
         </div>

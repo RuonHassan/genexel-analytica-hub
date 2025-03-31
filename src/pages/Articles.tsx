@@ -100,10 +100,10 @@ const Articles = () => {
       <div className="bg-analytics-50 py-12">
         <div className="container mx-auto px-4 md:px-6">
           <h1 className="text-4xl font-bold text-analytics-900 mb-4">
-            Latest Articles
+            Latest Research in Precision Medicine
           </h1>
           <p className="text-xl text-gray-600">
-            Stay informed with our latest insights and analysis
+            Stay informed with the latest genomic insights and breakthrough discoveries in drug resistance mechanisms
           </p>
         </div>
       </div>

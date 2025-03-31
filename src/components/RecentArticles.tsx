@@ -39,7 +39,7 @@ const RecentArticles = () => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl font-semibold mb-4">Recent Articles</h3>
+      <h3 className="text-xl font-semibold mb-4">Related Research Articles</h3>
       
       {recentArticles.map((article) => (
         <Link 

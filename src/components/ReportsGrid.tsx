@@ -65,7 +65,7 @@ const ReportsGrid = ({
   if (reports.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500 text-lg">No reports available at the moment.</p>
+        <p className="text-gray-500 text-lg">Our comprehensive genomic analysis reports are currently being updated with the latest research findings. Please check back soon or contact us for advance access to our newest insights on non-mechanism drug resistance.</p>
       </div>
     );
   }
